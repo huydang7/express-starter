@@ -1,9 +1,8 @@
-import express from "express";
-const PORT = 3000;
-const app = express();
-app.get("/test", (req, res) => {
-  res.status(200).send("Hello World");
-});
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+import app from "./app";
+import config from "./configs/config";
+import { initDb } from "./database/connection";
+
+initDb();
+app.listen(config.port, () => {
+  console.log(`Server running on port ${config.port}`);
 });

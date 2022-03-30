@@ -2,3 +2,4 @@ environment/
 node_modules/
 dist/
 logs/
+.env

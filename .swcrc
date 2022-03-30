@@ -1,12 +1,13 @@
 {
     "jsc": {
-      "parser": {
-        "syntax": "typescript"
-      }
+        "externalHelpers": false,
+        "parser": {
+            "syntax": "typescript",
+            "tsx": true,
+            "decorators": true
+        }
     },
-    "env": {
-      "targets": {
-        "node": 16
-      }
+    "module": {
+        "type": "commonjs"
     }
-  }
+}
