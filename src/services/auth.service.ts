@@ -1,5 +1,4 @@
 import { IUser } from "../models/user.model";
-import { createUser } from "./user.service";
 import httpStatus from "http-status";
 import { Token } from "../models";
 import { ApiError } from "../exceptions/api-error";
@@ -7,7 +6,9 @@ import TokenTypes from "../configs/token";
 import { TokenService, UserService } from ".";
 
 export const register = async (user: IUser) => {
-  return await createUser(user);
+  const _user = await UserService.createUser(user);
+  const tokens = await TokenService.generateAuthTokens(_user);
+  return { user: _user, tokens };
 };
 
 export const loginUserWithEmailAndPassword = async (
@@ -18,7 +19,9 @@ export const loginUserWithEmailAndPassword = async (
   if (!user || !(await user.isPasswordMatch(password))) {
     throw new ApiError(httpStatus.UNAUTHORIZED, "Incorrect email or password");
   }
-  return user;
+  const tokens = await TokenService.generateAuthTokens(user);
+
+  return { user, tokens };
 };
 
 export const logout = async (refreshToken: string) => {

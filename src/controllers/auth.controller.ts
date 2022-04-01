@@ -12,4 +12,16 @@ router.post("/register", async (req, res, next) => {
   }
 });
 
+router.post("/login", async (req, res, next) => {
+  try {
+    const result = await AuthService.loginUserWithEmailAndPassword(
+      req.body.email,
+      req.body.password
+    );
+    res.formatter(result);
+  } catch (err) {
+    next(err);
+  }
+});
+
 export default router;

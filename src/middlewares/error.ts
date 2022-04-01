@@ -1,9 +1,10 @@
 import { Response } from "express";
 import config from "../configs/config";
+import logger from "../configs/logger";
 
 const errorHandler = (err: any, req: any, res: Response, next: any) => {
-  let { httpCode, message, errorCode, errorDetails } = err;
-
+  const { httpCode, message, errorCode, errorDetails } = err;
+  logger.error(err.stack);
   res
     .status(httpCode)
     .formatter(

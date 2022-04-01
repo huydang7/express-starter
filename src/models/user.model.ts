@@ -1,30 +1,25 @@
 import mongoose from "mongoose";
 import mongoose_delete from "mongoose-delete";
-
+import mongoosePaginate from "mongoose-paginate-v2";
 import validator from "validator";
 import bcrypt from "bcryptjs";
-import { toJSON, paginate } from "./plugins";
+import { toJSON } from "./plugins";
 import { Role } from "../configs/roles";
 import { Document } from "mongoose";
 
 export interface IUser extends Document {
   name: string;
   email: string;
-  shortId: string;
   password: string;
   role: Role | string;
   isEmailVerified: boolean;
-  phone: string;
-  note: string;
-  affLinks: any;
-  customers: any;
   isPasswordMatch(password: string): Promise<boolean>;
 }
 
-interface UserModel extends mongoose.Model<IUser> {
-  isEmailTaken(email: string, excludeUserId?: string): boolean;
-  delete(...arg: any): any;
-  paginate(...arg: any): any;
+interface UserModel
+  extends mongoose.PaginateModel<IUser>,
+    mongoose_delete.SoftDeleteModel<IUser> {
+  isEmailTaken(email: string, excludeUserId?: string): Promise<boolean>;
 }
 
 const userSchema = new mongoose.Schema<IUser>(
@@ -46,13 +41,6 @@ const userSchema = new mongoose.Schema<IUser>(
         }
       },
     },
-    shortId: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-      lowercase: true,
-    },
     password: {
       type: String,
       required: true,
@@ -65,7 +53,7 @@ const userSchema = new mongoose.Schema<IUser>(
           );
         }
       },
-      private: true, // used by the toJSON plugin
+      private: true,
     },
     role: {
       type: String,
@@ -76,14 +64,6 @@ const userSchema = new mongoose.Schema<IUser>(
       type: Boolean,
       default: false,
     },
-    phone: {
-      type: String,
-    },
-    note: {
-      type: String,
-    },
-    affLinks: [{ type: mongoose.Schema.Types.ObjectId, ref: "AffLink" }],
-    customers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Customer" }],
   },
   {
     timestamps: true,
@@ -91,7 +71,7 @@ const userSchema = new mongoose.Schema<IUser>(
 );
 
 userSchema.plugin(toJSON);
-userSchema.plugin(paginate);
+userSchema.plugin(mongoosePaginate);
 userSchema.plugin(mongoose_delete, { deletedAt: true, overrideMethods: "all" });
 
 userSchema.statics.isEmailTaken = async function (email, excludeUserId) {

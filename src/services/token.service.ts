@@ -9,7 +9,7 @@ import config from "../configs/config";
 import TokenTypes from "../configs/token";
 import { UserService } from ".";
 
-const generateToken = (
+export const generateToken = (
   userId: string,
   expires: Moment,
   type: string,
@@ -24,7 +24,7 @@ const generateToken = (
   return jwt.sign(payload, secret);
 };
 
-const saveToken = async (
+export const saveToken = async (
   token: string,
   userId: string,
   expires: Moment,
@@ -41,7 +41,7 @@ const saveToken = async (
   return tokenDoc;
 };
 
-const verifyToken = async (token: string, type: string) => {
+export const verifyToken = async (token: string, type: string) => {
   const payload = jwt.verify(token, config.jwt.secret);
   const tokenDoc = await Token.findOne({
     token,
@@ -55,7 +55,7 @@ const verifyToken = async (token: string, type: string) => {
   return tokenDoc;
 };
 
-const generateAuthTokens = async (user: any) => {
+export const generateAuthTokens = async (user: any) => {
   const accessTokenExpires = moment().add(
     config.jwt.accessExpirationMinutes,
     "minutes"
@@ -94,7 +94,7 @@ const generateAuthTokens = async (user: any) => {
   };
 };
 
-const generateResetPasswordToken = async (email: string) => {
+export const generateResetPasswordToken = async (email: string) => {
   const user = await UserService.getUserByEmail(email);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "No users found with this email");
@@ -117,7 +117,7 @@ const generateResetPasswordToken = async (email: string) => {
   return resetPasswordToken;
 };
 
-const generateVerifyEmailToken = async (user: any) => {
+export const generateVerifyEmailToken = async (user: any) => {
   const expires = moment().add(
     config.jwt.verifyEmailExpirationMinutes,
     "minutes"
@@ -129,13 +129,4 @@ const generateVerifyEmailToken = async (user: any) => {
   );
   await saveToken(verifyEmailToken, user.id, expires, TokenTypes.VERIFY_EMAIL);
   return verifyEmailToken;
-};
-
-export {
-  generateToken,
-  saveToken,
-  verifyToken,
-  generateAuthTokens,
-  generateResetPasswordToken,
-  generateVerifyEmailToken,
 };
