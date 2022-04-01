@@ -9,6 +9,7 @@ import routes from "./controllers";
 import { errorHandler } from "./middlewares/error";
 import { responseEnhancer } from "./middlewares/formatter";
 import { ApiError } from "./exceptions/api-error";
+import jwtStrategy from "./configs/jwt";
 
 const app = express();
 app.use(helmet());
@@ -19,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(compression());
 
 app.use(cors());
-
+passport.use("jwt", jwtStrategy);
 app.use(passport.initialize());
 app.use(responseEnhancer);
 

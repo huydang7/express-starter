@@ -1,10 +1,21 @@
-const allRoles = {
-  user: [],
-  admin: ["adminOnly"],
-  marketer: [],
+enum Role {
+  admin = "admin",
+  user = "user",
+  marketer = "marketer",
+}
+
+enum RoleRights {
+  adminOnly,
+}
+
+type RoleRightsMap = {
+  [key in Role]: RoleRights[];
 };
 
-const roles = Object.keys(allRoles);
-const roleRights = new Map(Object.entries(allRoles));
+const AllRoles: RoleRightsMap = {
+  admin: [RoleRights.adminOnly],
+  marketer: [],
+  user: [],
+};
 
-export { roles, roleRights };
+export { Role, RoleRights, AllRoles };

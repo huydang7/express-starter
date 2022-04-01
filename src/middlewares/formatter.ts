@@ -28,7 +28,8 @@ const responseEnhancer = (
     errorDetails?: any,
     stack?: any
   ) => {
-    res.json({
+    const statusCode = res.statusCode || 500;
+    res.status(statusCode).json({
       errorCode: errorCode || 0,
       errorDetails: errorDetails || "",
       message: message || "",
