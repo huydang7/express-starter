@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import logger from "../configs/logger";
 
 export const initDb = async () => {
-  console.log("initDb");
+  logger.info("Connecting to MongoDB");
   mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
     logger.info("Connected to MongoDB");
   });
