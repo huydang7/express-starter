@@ -45,12 +45,12 @@ const forgotPassword = catchAsync(async (req, res) => {
     req.body.email,
   );
   await EmailService.sendResetPasswordEmail(req.body.email, resetPasswordToken);
-  res.status(httpStatus.NO_CONTENT).formatter();
+  res.formatter(true);
 });
 
 const resetPassword = catchAsync(async (req, res) => {
   await AuthService.resetPassword(req.query.token as string, req.body.password);
-  res.status(httpStatus.NO_CONTENT).formatter();
+  res.formatter(true);
 });
 
 const sendVerificationEmail = catchAsync(async (req, res) => {
@@ -61,12 +61,12 @@ const sendVerificationEmail = catchAsync(async (req, res) => {
     req?.user?.email as string,
     verifyEmailToken,
   );
-  res.status(httpStatus.NO_CONTENT).formatter();
+  res.formatter(true);
 });
 
 const verifyEmail = catchAsync(async (req, res) => {
   await AuthService.verifyEmail(req.query.token as string);
-  res.status(httpStatus.NO_CONTENT).formatter();
+  res.formatter(true);
 });
 
 router.post('/register', AuthValidator.validateRegister, register);

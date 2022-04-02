@@ -10,13 +10,13 @@ import TokenTypes from '../configs/token';
 import { UserService } from '.';
 
 export const generateToken = (
-  userId: string,
+  data: any,
   expires: Moment,
   type: string,
   secret = config.jwt.secret,
 ) => {
   const payload = {
-    sub: userId,
+    sub: data,
     iat: moment().unix(),
     exp: expires.unix(),
     type,
