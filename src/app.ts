@@ -1,6 +1,5 @@
 import express from 'express';
 import helmet from 'helmet';
-
 import compression from 'compression';
 import cors from 'cors';
 import passport from 'passport';
@@ -11,12 +10,16 @@ import { responseEnhancer } from './middlewares/formatter';
 import { ApiError } from './exceptions/api-error';
 import jwtStrategy from './configs/jwt';
 import path from 'path';
+import * as morgan from './middlewares/morgan';
 
 const app = express();
 app.use(helmet());
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
+
+app.use(morgan.successHandler);
+app.use(morgan.errorHandler);
 
 app.use(compression());
 

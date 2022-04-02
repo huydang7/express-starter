@@ -1,4 +1,4 @@
-import winston from 'winston';
+import winston, { format } from 'winston';
 import config from './config';
 
 const enumerateErrorFormat = winston.format((info) => {
@@ -8,21 +8,64 @@ const enumerateErrorFormat = winston.format((info) => {
   return info;
 });
 
+export const formatter = format.combine(
+  format.timestamp(),
+  format.simple(),
+  winston.format.colorize(),
+  format.printf((log) => `${log.timestamp} ${log.level}: ${log.message}`),
+  enumerateErrorFormat(),
+);
+
+export const apiFormatter = format.combine(
+  format.timestamp(),
+  format.simple(),
+  winston.format.colorize(),
+  format.printf((log) => `${log.timestamp} [API] ${log.level}: ${log.message}`),
+  enumerateErrorFormat(),
+);
+
+export const dbFormatter = format.combine(
+  format.timestamp(),
+  format.simple(),
+  winston.format.colorize(),
+  format.printf((log) => `${log.timestamp} [DB] ${log.level}: ${log.message}`),
+  enumerateErrorFormat(),
+);
+
 const logger = winston.createLogger({
   level: config.env === 'development' ? 'debug' : 'info',
-  format: winston.format.combine(
-    enumerateErrorFormat(),
-    config.env === 'development'
-      ? winston.format.colorize()
-      : winston.format.uncolorize(),
-    winston.format.splat(),
-    winston.format.printf(({ level, message }) => `${level}: ${message}`),
-  ),
+  format: apiFormatter,
   transports: [
     new winston.transports.Console({
-      stderrLevels: ['error'],
+      format: apiFormatter,
+      handleExceptions: true,
+    }),
+    new winston.transports.File({
+      format: apiFormatter,
+      filename: 'api.log',
+      dirname: 'logs',
+      maxsize: 10 * 1024 * 1024, // 10MB
+      handleExceptions: true,
     }),
   ],
 });
 
-export default logger;
+const dbLogger = winston.createLogger({
+  level: config.env === 'development' ? 'debug' : 'info',
+  format: dbFormatter,
+  transports: [
+    new winston.transports.Console({
+      format: dbFormatter,
+      handleExceptions: true,
+    }),
+    new winston.transports.File({
+      format: dbFormatter,
+      filename: 'db.log',
+      dirname: 'logs',
+      maxsize: 10 * 1024 * 1024, // 10MB
+      handleExceptions: true,
+    }),
+  ],
+});
+
+export { logger, dbLogger };
