@@ -1,11 +1,11 @@
-import mongoose from "mongoose";
-import mongoose_delete from "mongoose-delete";
-import mongoosePaginate from "mongoose-paginate-v2";
-import validator from "validator";
-import bcrypt from "bcryptjs";
-import { toJSON } from "./plugins";
-import { Role } from "../configs/roles";
-import { Document } from "mongoose";
+import mongoose from 'mongoose';
+import mongoose_delete from 'mongoose-delete';
+import mongoosePaginate from 'mongoose-paginate-v2';
+import validator from 'validator';
+import bcrypt from 'bcryptjs';
+import { toJSON } from './plugins';
+import { Role } from '../configs/roles';
+import { Document } from 'mongoose';
 
 export interface IUser extends Document {
   name: string;
@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema<IUser>(
       lowercase: true,
       validate(value: string) {
         if (!validator.isEmail(value)) {
-          throw new Error("Invalid email");
+          throw new Error('Invalid email');
         }
       },
     },
@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema<IUser>(
       validate(value: string) {
         if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
           throw new Error(
-            "Password must contain at least one letter and one number"
+            'Password must contain at least one letter and one number',
           );
         }
       },
@@ -58,7 +58,7 @@ const userSchema = new mongoose.Schema<IUser>(
     role: {
       type: String,
       enum: Role,
-      default: "user",
+      default: 'user',
     },
     isEmailVerified: {
       type: Boolean,
@@ -67,12 +67,12 @@ const userSchema = new mongoose.Schema<IUser>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 userSchema.plugin(toJSON);
 userSchema.plugin(mongoosePaginate);
-userSchema.plugin(mongoose_delete, { deletedAt: true, overrideMethods: "all" });
+userSchema.plugin(mongoose_delete, { deletedAt: true, overrideMethods: 'all' });
 
 userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
   const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
@@ -84,14 +84,14 @@ userSchema.methods.isPasswordMatch = async function (password: string) {
   return bcrypt.compare(password, user.password);
 };
 
-userSchema.pre("save", async function (next) {
+userSchema.pre('save', async function (next) {
   const user = this;
-  if (user.isModified("password")) {
+  if (user.isModified('password')) {
     user.password = await bcrypt.hash(user.password, 8);
   }
   next();
 });
 
-const User = mongoose.model<IUser, UserModel>("User", userSchema);
+const User = mongoose.model<IUser, UserModel>('User', userSchema);
 
 export { User };

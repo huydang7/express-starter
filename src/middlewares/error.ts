@@ -1,6 +1,6 @@
-import { Response } from "express";
-import config from "../configs/config";
-import logger from "../configs/logger";
+import { Response } from 'express';
+import config from '../configs/config';
+import logger from '../configs/logger';
 
 const errorHandler = (err: any, req: any, res: Response, next: any) => {
   const { httpCode, message, errorCode, errorDetails } = err;
@@ -12,7 +12,7 @@ const errorHandler = (err: any, req: any, res: Response, next: any) => {
       message,
       errorCode,
       errorDetails,
-      config.env === "development" && err.stack
+      config.env === 'development' && err.stack,
     );
 };
 

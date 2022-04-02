@@ -1,38 +1,31 @@
-import { Express, Request, Response, NextFunction } from "express";
+import { Express, Request, Response, NextFunction } from 'express';
+import { IUser } from '../models';
 
 type ResponseFunction = (
   data: any,
   message?: any,
   errorCode?: any,
   errorDetails?: any,
-  stack?: any
+  stack?: any,
 ) => void;
-
-declare global {
-  namespace Express {
-    interface Response {
-      formatter: ResponseFunction;
-    }
-  }
-}
 
 const responseEnhancer = (
   _: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void => {
   res.formatter = (
     data: any,
     message?: any,
     errorCode?: any,
     errorDetails?: any,
-    stack?: any
+    stack?: any,
   ) => {
     const statusCode = res.statusCode || 500;
     res.status(statusCode).json({
       errorCode: errorCode || 0,
-      errorDetails: errorDetails || "",
-      message: message || "",
+      errorDetails: errorDetails || '',
+      message: message || '',
       data,
       stack,
     });

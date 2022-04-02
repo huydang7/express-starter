@@ -9,7 +9,7 @@ export class ApiError extends Error {
     httpCode: number,
     message: string,
     errorCode?: number,
-    errorDetails?: ErrorDetails
+    errorDetails?: ErrorDetails,
   ) {
     super(message);
     this.httpCode = httpCode;
