@@ -11,7 +11,7 @@ const router = express.Router();
 
 const createUser = catchAsync(async (req, res) => {
   const user = await UserService.createUser(req.body);
-  res.status(httpStatus.CREATED).formatter(user);
+  res.formatter(user);
 });
 
 const getUsers = catchAsync(async (req, res) => {
@@ -44,7 +44,7 @@ const updateProfile = catchAsync(async (req, res) => {
 
 const deleteUser = catchAsync(async (req, res) => {
   await UserService.deleteUserById(req.params.userId);
-  res.status(httpStatus.NO_CONTENT).formatter();
+  res.formatter(true);
 });
 
 router
@@ -53,10 +53,19 @@ router
   .get(requireRoles([Role.admin]), Validator.getUsers, getUsers)
   .patch(requireRoles([Role.admin]), Validator.updateUser, updateProfile);
 
-router
-  .route('/:userId')
-  .get(requireRoles([Role.admin]), Validator.getUser, getUser)
-  .patch(requireRoles([Role.admin]), Validator.updateUser, updateUser)
-  .delete(requireRoles([Role.admin]), Validator.deleteUser, deleteUser);
+router.get('/:userId', requireRoles([Role.admin]), Validator.getUser, getUser);
+
+router.patch(
+  '/:userId',
+  requireRoles([Role.admin]),
+  Validator.updateUser,
+  updateUser,
+);
+router.delete(
+  '/:userId',
+  requireRoles([Role.admin]),
+  Validator.getUser,
+  deleteUser,
+);
 
 export default router;

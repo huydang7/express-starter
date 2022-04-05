@@ -1,5 +1,4 @@
 import express from 'express';
-import httpStatus from 'http-status';
 import { auth } from '../../middlewares/auth';
 import {
   AuthService,
@@ -29,15 +28,15 @@ const login = catchAsync(async (req, res) => {
 
 const logout = catchAsync(async (req, res) => {
   await AuthService.logout(req.body.refreshToken);
-  res.status(httpStatus.NO_CONTENT).formatter();
+  res.formatter(true);
 });
 const getMe = catchAsync(async (req, res) => {
   const user = await UserService.getUserById(req?.user?.id as string);
-  res.formatter({ user });
+  res.formatter(user);
 });
 const refreshTokens = catchAsync(async (req, res) => {
   const tokens = await AuthService.refreshAuth(req.body.refreshToken);
-  res.send({ ...tokens });
+  res.formatter(tokens);
 });
 
 const forgotPassword = catchAsync(async (req, res) => {
