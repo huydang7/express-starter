@@ -32,9 +32,8 @@ module.exports = () => ({
   plugins: [
     new Dotenv(),
     new webpack.HotModuleReplacementPlugin(),
-    // new NodemonPlugin(),
     new RunScriptWebpackPlugin({
-      name: 'main.js',
+      name: 'index.js',
       nodeArgs: ['--inspect'],
       signal: false | true | 'SIGUSR2',
     }),
@@ -42,7 +41,7 @@ module.exports = () => ({
   devtool: 'source-map',
   output: {
     chunkFilename: '[name].js',
-    filename: '[name].js',
+    filename: 'index.js',
     path: path.resolve(__dirname, './dist'),
   },
 });
