@@ -1,6 +1,6 @@
 import express from 'express';
 import httpStatus from 'http-status';
-import { auth, requirePermissions } from '../../middlewares/auth';
+import { auth } from '../../middlewares/auth';
 import {
   AuthService,
   TokenService,

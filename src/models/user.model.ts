@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import mongoose_delete from 'mongoose-delete';
+import mongooseDelete from 'mongoose-delete';
 import mongoosePaginate from 'mongoose-paginate-v2';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
@@ -18,7 +18,7 @@ export interface IUser extends Document {
 
 interface UserModel
   extends mongoose.PaginateModel<IUser>,
-    mongoose_delete.SoftDeleteModel<IUser> {
+    mongooseDelete.SoftDeleteModel<IUser> {
   isEmailTaken(email: string, excludeUserId?: string): Promise<boolean>;
 }
 
@@ -72,7 +72,7 @@ const userSchema = new mongoose.Schema<IUser>(
 
 userSchema.plugin(toJSON);
 userSchema.plugin(mongoosePaginate);
-userSchema.plugin(mongoose_delete, { deletedAt: true, overrideMethods: 'all' });
+userSchema.plugin(mongooseDelete, { deletedAt: true, overrideMethods: 'all' });
 
 userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
   const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
