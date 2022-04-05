@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "build": "esbuild esbuild/dev.config.js",
-    "build-dev": "npm run build && node -r dotenv/config --inspect dist/index.js",
+    "build": "esbuild src/index.ts --platform=node --bundle --minify --outfile=dist/index.js",
+    "build-dev": "npm run build && NODE_ENV=development node -r dotenv/config --inspect dist/index.js",
     "dev": "nodemon --ext ts --exec \"npm run build-dev\"",
-    "start": "npm run build && node -r dotenv/config dist/index.js",
+    "start": "npm run build && NODE_ENV=production node -r dotenv/config dist/index.js",
     "format": "npx prettier --config .prettierrc --write ./src/**/*.ts ./src/*.ts",
     "lint": "npx eslint ./**/*.ts && echo 'Passed!'"
   },
@@ -21,6 +21,7 @@
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
+    "esbuild": "^0.14.31",
     "express": "^4.17.3",
     "helmet": "^5.0.2",
     "http-errors": "^2.0.0",
