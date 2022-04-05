@@ -14,6 +14,7 @@ export interface IUser extends Document {
   role: Role | string;
   isEmailVerified: boolean;
   isPasswordMatch(password: string): Promise<boolean>;
+  getUpdate(): any;
 }
 
 interface UserModel
@@ -90,6 +91,20 @@ userSchema.pre('save', async function (next) {
     user.password = await bcrypt.hash(user.password, 8);
   }
   next();
+});
+
+userSchema.pre('updateOne', async function (next) {
+  const data = this.getUpdate();
+  if (!data.password) {
+    return next();
+  }
+  try {
+    const hashPassword = await bcrypt.hash(data.password, 8);
+    data.password = hashPassword;
+    next();
+  } catch (error) {
+    return next();
+  }
 });
 
 const User = mongoose.model<IUser, UserModel>('User', userSchema);
