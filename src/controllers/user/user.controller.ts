@@ -3,7 +3,6 @@ import httpStatus from 'http-status';
 import { Role } from '../../configs/roles';
 import { ApiError } from '../../exceptions/api-error';
 import { requireRoles } from '../../middlewares/auth';
-import validate from '../../middlewares/validate';
 import { UserService } from '../../services';
 import { catchAsync, pick } from '../../utils';
 import * as Validator from './validator';

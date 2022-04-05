@@ -1,1 +1,1 @@
-export * from "./toJSON.plugin";
+export * from './toJSON.plugin';

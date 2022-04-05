@@ -16,7 +16,7 @@ const toJSON = (schema: any) => {
     transform(doc: any, ret: any, options: any) {
       Object.keys(schema.paths).forEach((path) => {
         if (schema.paths[path].options && schema.paths[path].options.private) {
-          deleteAtPath(ret, path.split("."), 0);
+          deleteAtPath(ret, path.split('.'), 0);
         }
       });
 

@@ -1,13 +1,4 @@
-import { Express, Request, Response, NextFunction } from 'express';
-import { IUser } from '../models';
-
-type ResponseFunction = (
-  data: any,
-  message?: any,
-  errorCode?: any,
-  errorDetails?: any,
-  stack?: any,
-) => void;
+import { Request, Response, NextFunction } from 'express';
 
 const responseEnhancer = (
   _: Request,
