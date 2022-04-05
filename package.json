@@ -8,7 +8,7 @@
     "build:esbuild-dev": "npm run build:esbuild && node -r dotenv/config --inspect dist/index.js",
     "dev:esbuild": "nodemon --ext ts --exec \"npm run build:esbuild-dev\"",
     "build:swc": "swc src -d dist",
-    "build:swc-dev": "npm run build:swc && node --inspect dist/index.js",
+    "build:swc-dev": "npm run build:swc && node -r dotenv/config --inspect dist/index.js",
     "dev:swc": "nodemon --ext ts --exec \"npm run build:swc-dev\"",
     "dev": "rm -rf dist && webpack --config webpack.config.js --progress --watch",
     "start": "node -r dotenv/config dist/index.js",
