@@ -3,9 +3,11 @@
 **ESBuild**
 
     npm run dev:esbuild
+    npm run build:esbuild
 **SWC**
 
     npm run dev:swc
+    npm run build:swc
 **Webpack (dev only)**
 
     npm run dev
