@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "build:esbuild": "esbuild src/index.ts --platform=node --bundle --minify --outfile=dist/index.js",
+    "build:esbuild": "node esbuild.js",
     "build:esbuild-dev": "npm run build:esbuild && node -r dotenv/config --inspect dist/index.js",
     "dev:esbuild": "nodemon --ext ts --exec \"npm run build:esbuild-dev\"",
     "build:swc": "swc src -d dist",
@@ -72,7 +72,10 @@
     "webpack": "^5.71.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^3.11.3",
-    "webpack-node-externals": "^3.0.0"
+    "webpack-node-externals": "^3.0.0",
+    "copy-webpack-plugin": "^10.2.4",
+    "esbuild-copy-static-files": "^0.1.0",
+    "nodemon-webpack-plugin": "^4.7.1"
   },
   "type": "commonjs"
 }

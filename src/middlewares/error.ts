@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Response } from 'express';
 import config from '../configs/config';
 import { logger } from '../configs/logger';
 
-const errorHandler = (err: any, req: any, res: Response) => {
+const errorHandler = (err: any, _req: any, res: Response, _next: any) => {
   const { httpCode, message, errorCode, errorDetails } = err;
   logger.error(err.stack);
   res

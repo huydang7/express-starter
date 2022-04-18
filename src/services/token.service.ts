@@ -42,11 +42,11 @@ export const saveToken = async (
 };
 
 export const verifyToken = async (token: string, type: string) => {
-  const payload = jwt.verify(token, config.jwt.secret);
+  const payload: any = jwt.verify(token, config.jwt.secret);
   const tokenDoc = await Token.findOne({
     token,
     type,
-    user: payload.sub,
+    user: payload.sub.id,
     blacklisted: false,
   });
   if (!tokenDoc) {
@@ -104,7 +104,7 @@ export const generateResetPasswordToken = async (email: string) => {
     'minutes',
   );
   const resetPasswordToken = generateToken(
-    user.id,
+    user,
     expires,
     TokenTypes.RESET_PASSWORD,
   );
@@ -123,7 +123,7 @@ export const generateVerifyEmailToken = async (user: any) => {
     'minutes',
   );
   const verifyEmailToken = generateToken(
-    user.id,
+    user,
     expires,
     TokenTypes.VERIFY_EMAIL,
   );

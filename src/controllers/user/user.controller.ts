@@ -2,7 +2,7 @@ import express from 'express';
 import httpStatus from 'http-status';
 import { Role } from '../../configs/roles';
 import { ApiError } from '../../exceptions/api-error';
-import { requireRoles } from '../../middlewares/auth';
+import { auth, requireRoles } from '../../middlewares/auth';
 import { UserService } from '../../services';
 import { catchAsync, pick } from '../../utils';
 import * as Validator from './validator';
@@ -22,6 +22,7 @@ const getUsers = catchAsync(async (req, res) => {
 });
 
 const getUser = catchAsync(async (req, res) => {
+  console.log(req.params);
   const user = await UserService.getUserById(req.params.userId);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
@@ -51,21 +52,12 @@ router
   .route('/')
   .post(requireRoles([Role.admin]), Validator.createUser, createUser)
   .get(requireRoles([Role.admin]), Validator.getUsers, getUsers)
-  .patch(requireRoles([Role.admin]), Validator.updateUser, updateProfile);
+  .patch(auth(), Validator.updateProfile, updateProfile);
 
-router.get('/:userId', requireRoles([Role.admin]), Validator.getUser, getUser);
-
-router.patch(
-  '/:userId',
-  requireRoles([Role.admin]),
-  Validator.updateUser,
-  updateUser,
-);
-router.delete(
-  '/:userId',
-  requireRoles([Role.admin]),
-  Validator.getUser,
-  deleteUser,
-);
+router
+  .route('/:userId')
+  .get(requireRoles([Role.admin]), Validator.getUser, getUser)
+  .patch(requireRoles([Role.admin]), Validator.updateUser, updateUser)
+  .delete(requireRoles([Role.admin]), Validator.getUser, deleteUser);
 
 export default router;

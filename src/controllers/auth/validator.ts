@@ -36,16 +36,14 @@ export const validateForgotPassword = validate({
 });
 
 export const validateResetPassword = validate({
-  query: Joi.object().keys({
-    token: Joi.string().required(),
-  }),
   body: Joi.object().keys({
+    token: Joi.string().required(),
     password: Joi.string().required().custom(password),
   }),
 });
 
 export const validateVerifyEmail = validate({
-  query: Joi.object().keys({
+  body: Joi.object().keys({
     token: Joi.string().required(),
   }),
 });

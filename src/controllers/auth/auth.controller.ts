@@ -48,7 +48,7 @@ const forgotPassword = catchAsync(async (req, res) => {
 });
 
 const resetPassword = catchAsync(async (req, res) => {
-  await AuthService.resetPassword(req.query.token as string, req.body.password);
+  await AuthService.resetPassword(req.body.token as string, req.body.password);
   res.formatter(true);
 });
 
@@ -64,7 +64,7 @@ const sendVerificationEmail = catchAsync(async (req, res) => {
 });
 
 const verifyEmail = catchAsync(async (req, res) => {
-  await AuthService.verifyEmail(req.query.token as string);
+  await AuthService.verifyEmail(req.body.token as string);
   res.formatter(true);
 });
 

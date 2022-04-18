@@ -13,11 +13,12 @@ const responseEnhancer = (
     stack?: any,
   ) => {
     const statusCode = res.statusCode || 500;
+
     res.status(statusCode).json({
       errorCode: errorCode || 0,
       errorDetails: errorDetails || '',
       message: message || '',
-      data,
+      result: data,
       stack,
     });
   };

@@ -48,3 +48,14 @@ export const deleteUser = validate({
     userId: Joi.string().custom(objectId),
   }),
 });
+
+export const updateProfile = validate({
+  body: Joi.object()
+    .keys({
+      email: Joi.string().email(),
+      password: Joi.string().custom(password),
+      name: Joi.string(),
+    })
+    .min(1)
+    .options({ allowUnknown: true }),
+});

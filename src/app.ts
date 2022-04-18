@@ -14,6 +14,7 @@ import * as morgan from './middlewares/morgan';
 
 const app = express();
 app.use(helmet());
+app.use(responseEnhancer);
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
@@ -26,7 +27,6 @@ app.use(compression());
 app.use(cors());
 passport.use('jwt', jwtStrategy);
 app.use(passport.initialize());
-app.use(responseEnhancer);
 
 app.use('/api/v1', routes);
 app.use((req, res, next) => {
