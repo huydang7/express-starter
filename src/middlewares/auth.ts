@@ -1,8 +1,7 @@
 import passport from 'passport';
-import httpStatus from 'http-status';
-import { ApiError } from '../exceptions/api-error';
 import { NextFunction, Request, Response } from 'express';
 import { AllRoles, Role, RoleRights } from '../configs/roles';
+import { AuthError, ForbiddenError } from '../exceptions';
 
 const verifyPermissionCallback =
   (
@@ -16,9 +15,7 @@ const verifyPermissionCallback =
   ) =>
   async (err: any, user: any, info: any) => {
     if (!options.optional && (err || info || !user)) {
-      return reject(
-        new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'),
-      );
+      return reject(new AuthError('Please authenticate'));
     }
     req.user = user;
 
@@ -28,7 +25,7 @@ const verifyPermissionCallback =
         (requiredRight: RoleRights) => userRights.includes(requiredRight),
       );
       if (!hasRequiredRights && req.params.userId !== user.id) {
-        return reject(new ApiError(httpStatus.FORBIDDEN, 'Forbidden'));
+        return reject(new ForbiddenError('Forbidden'));
       }
     }
 
@@ -47,15 +44,13 @@ const verifyRoleCallback =
   ) =>
   async (err: any, user: any, info: any) => {
     if (!options.optional && (err || info || !user)) {
-      return reject(
-        new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'),
-      );
+      return reject(new AuthError('Please authenticate'));
     }
     req.user = user;
     if (roles.length) {
       const hasRequiredRights = roles.includes(user.role as Role);
       if (!hasRequiredRights && req.params.userId !== user.id) {
-        return reject(new ApiError(httpStatus.FORBIDDEN, 'Forbidden'));
+        return reject(new ForbiddenError('Forbidden'));
       }
     }
 

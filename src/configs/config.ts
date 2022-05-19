@@ -1,4 +1,8 @@
 import Joi from 'joi';
+import path from 'path';
+import * as dotenv from 'dotenv';
+
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const envVarsSchema = Joi.object()
   .keys({
@@ -6,7 +10,11 @@ const envVarsSchema = Joi.object()
       .valid('production', 'development', 'test')
       .required(),
     PORT: Joi.number().default(3000),
-    MONGODB_URL: Joi.string().required().description('Mongo DB url'),
+    DB_NAME: Joi.string().required(),
+    DB_HOST: Joi.string().required(),
+    DB_USERNAME: Joi.string().required(),
+    DB_PASSWORD: Joi.string().required(),
+
     JWT_SECRET: Joi.string().required().description('JWT secret key'),
     JWT_ACCESS_EXPIRATION_MINUTES: Joi.number()
       .default(30)
@@ -41,13 +49,12 @@ if (error) {
 export default {
   env: envVars.NODE_ENV,
   port: envVars.PORT,
-  mongoose: {
-    url: envVars.MONGODB_URL + (envVars.NODE_ENV === 'test' ? '-test' : ''),
-    options: {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      autoIndex: true,
-    },
+  host_url: envVars.HOST_URL,
+  db: {
+    host: envVars.DB_HOST,
+    name: envVars.DB_NAME,
+    username: envVars.DB_USERNAME,
+    password: envVars.DB_PASSWORD,
   },
   jwt: {
     secret: envVars.JWT_SECRET,

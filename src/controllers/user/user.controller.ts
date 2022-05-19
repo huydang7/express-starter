@@ -1,7 +1,6 @@
 import express from 'express';
-import httpStatus from 'http-status';
 import { Role } from '../../configs/roles';
-import { ApiError } from '../../exceptions/api-error';
+import { NotFoundError } from '../../exceptions';
 import { auth, requireRoles } from '../../middlewares/auth';
 import { UserService } from '../../services';
 import { catchAsync, pick } from '../../utils';
@@ -18,14 +17,13 @@ const getUsers = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role']);
   const options = pick(req.query, ['sort', 'limit', 'page']);
   const result = await UserService.queryUsers(filter, options);
-  res.formatter({ users: result.docs, count: result.totalDocs });
+  res.formatter(result);
 });
 
 const getUser = catchAsync(async (req, res) => {
-  console.log(req.params);
   const user = await UserService.getUserById(req.params.userId);
   if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+    throw new NotFoundError('User not found');
   }
   res.formatter(user);
 });

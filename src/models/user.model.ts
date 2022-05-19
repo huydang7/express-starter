@@ -1,112 +1,81 @@
-import mongoose from 'mongoose';
-import mongooseDelete from 'mongoose-delete';
-import mongoosePaginate from 'mongoose-paginate-v2';
-import validator from 'validator';
 import bcrypt from 'bcryptjs';
-import { toJSON } from './plugins';
 import { Role } from '../configs/roles';
-import { Document } from 'mongoose';
+import Sequelize, { Model, Optional } from 'sequelize';
 
-export interface IUser extends Document {
+export interface IUser {
+  id: string;
   name: string;
   email: string;
   password: string;
   role: Role | string;
   isEmailVerified: boolean;
-  isPasswordMatch(password: string): Promise<boolean>;
-  getUpdate(): any;
 }
 
-interface UserModel
-  extends mongoose.PaginateModel<IUser>,
-    mongooseDelete.SoftDeleteModel<IUser> {
-  isEmailTaken(email: string, excludeUserId?: string): Promise<boolean>;
+type CreationAttributes = Optional<IUser, 'id'>;
+
+export class User extends Model<IUser, CreationAttributes> implements IUser {
+  id!: string;
+  name!: string;
+  email!: string;
+  password!: string;
+  role!: Role | string;
+  isEmailVerified!: boolean;
+  static isEmailTaken: (email: string) => Promise<boolean>;
+  isPasswordMatch = (password: string) => {
+    return bcrypt.compareSync(password, this.password);
+  };
 }
 
-const userSchema = new mongoose.Schema<IUser>(
-  {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
+User.isEmailTaken = async function (email) {
+  const res = await User.count({
+    where: {
+      email,
     },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-      lowercase: true,
-      validate(value: string) {
-        if (!validator.isEmail(value)) {
-          throw new Error('Invalid email');
-        }
-      },
-    },
-    password: {
-      type: String,
-      required: true,
-      trim: true,
-      minlength: 8,
-      validate(value: string) {
-        if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
-          throw new Error(
-            'Password must contain at least one letter and one number',
-          );
-        }
-      },
-      private: true,
-    },
-    role: {
-      type: String,
-      enum: Role,
-      default: 'user',
-    },
-    isEmailVerified: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  {
-    timestamps: true,
-  },
-);
-
-userSchema.plugin(toJSON);
-userSchema.plugin(mongoosePaginate);
-userSchema.plugin(mongooseDelete, { deletedAt: true, overrideMethods: 'all' });
-
-userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
-  const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
-  return !!user;
+  });
+  return !!res;
 };
 
-userSchema.methods.isPasswordMatch = async function (password: string) {
-  const user = this;
-  return bcrypt.compare(password, user.password);
+export const initModel = (connection: Sequelize.Sequelize): void => {
+  User.init(
+    {
+      id: {
+        type: Sequelize.BIGINT,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        set: function (value: string) {
+          this.setDataValue('password', bcrypt.hashSync(value, 10));
+        },
+      },
+      role: {
+        type: Sequelize.ENUM(Role.admin, Role.user),
+        allowNull: false,
+        defaultValue: Role.user,
+      },
+      isEmailVerified: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+    },
+    {
+      timestamps: true,
+      sequelize: connection,
+      modelName: 'User',
+      tableName: 'user',
+    },
+  );
 };
-
-userSchema.pre('save', async function (next) {
-  const user = this;
-  if (user.isModified('password')) {
-    user.password = await bcrypt.hash(user.password, 8);
-  }
-  next();
-});
-
-userSchema.pre('updateOne', async function (next) {
-  const data = this.getUpdate();
-  if (!data.password) {
-    return next();
-  }
-  try {
-    const hashPassword = await bcrypt.hash(data.password, 8);
-    data.password = hashPassword;
-    next();
-  } catch (error) {
-    return next();
-  }
-});
-
-const User = mongoose.model<IUser, UserModel>('User', userSchema);
-
-export { User };

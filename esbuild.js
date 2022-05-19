@@ -13,10 +13,18 @@ esbuild.build({
     copyStaticFiles({
       src: 'public',
       dest: 'dist/public',
-      dereference: true, 
+      dereference: true,
       errorOnExist: false,
       preserveTimestamps: true,
-      recursive: true, 
+      recursive: true,
+    }),
+    copyStaticFiles({
+      src: 'files',
+      dest: 'dist/files',
+      dereference: true,
+      errorOnExist: false,
+      preserveTimestamps: true,
+      recursive: true,
     }),
   ],
 });

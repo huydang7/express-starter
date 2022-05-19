@@ -1,6 +1,6 @@
 export type ErrorDetails = { [key: string]: any };
 
-export class ApiError extends Error {
+export class BaseError extends Error {
   httpCode: number;
   errorCode?: number;
   errorDetails?: ErrorDetails;

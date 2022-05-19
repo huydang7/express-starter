@@ -1,18 +1,51 @@
 import config from '../configs/config';
-import mongoose from 'mongoose';
+
 import { logger, dbLogger } from '../configs/logger';
 
+import { Sequelize } from 'sequelize';
+import { initModels, initRelations } from '../models';
+
+export let connection: Sequelize;
+
+export const getConnection = () => {
+  if (!connection) {
+    initDb();
+  }
+  return connection;
+};
+
 export const initDb = async () => {
-  logger.info('Connecting to MongoDB');
-  mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
-    logger.info('Connected to MongoDB');
-  });
-  mongoose.set('debug', function (coll, method, query, doc) {
-    dbLogger.info(`${coll}.${method}`, query, doc);
-    dbLogger.info(
-      `[${coll}][${method}] ${JSON.stringify({ query })}`,
-      query,
-      doc,
+  try {
+    logger.info('Initializing database connection...');
+    connection = new Sequelize(
+      config.db.name,
+      config.db.username,
+      config.db.password,
+      {
+        host: config.db.host,
+        dialect: 'postgres',
+        define: {
+          paranoid: true,
+        },
+        logging: (sql) => dbLogger.info(sql),
+      },
     );
-  });
+    await connection.authenticate();
+    initModels(connection);
+    initRelations();
+    await connection.sync({});
+    logger.info('Database connection initialized.');
+
+    connection.addHook('beforeCreate', (instance) => {
+      instance.setDataValue('id' as any, null); // Disallow manual id
+    });
+
+    connection.addHook('beforeBulkUpdate', (instance: any) => {
+      instance.fields = instance.fields.filter(
+        (column: string) => column !== 'id',
+      );
+    });
+  } catch (error: any) {
+    logger.error(`Database connection failed: ${error.message}`);
+  }
 };

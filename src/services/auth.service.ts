@@ -1,9 +1,8 @@
 import { IUser } from '../models/user.model';
-import httpStatus from 'http-status';
-import { Token } from '../models';
-import { ApiError } from '../exceptions/api-error';
 import TokenTypes from '../configs/token';
 import { TokenService, UserService } from '.';
+import { Token } from '../models/token.model';
+import { AuthError, NotFoundError } from '../exceptions';
 
 export const register = async (user: IUser) => {
   const _user = await UserService.createUser(user);
@@ -17,7 +16,7 @@ export const loginUserWithEmailAndPassword = async (
 ) => {
   const user = await UserService.getUserByEmail(email);
   if (!user || !(await user.isPasswordMatch(password))) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+    throw new AuthError('Incorrect email or password');
   }
   const tokens = await TokenService.generateAuthTokens(user);
 
@@ -26,14 +25,16 @@ export const loginUserWithEmailAndPassword = async (
 
 export const logout = async (refreshToken: string) => {
   const refreshTokenDoc = await Token.findOne({
-    token: refreshToken,
-    type: TokenTypes.REFRESH,
-    blacklisted: false,
+    where: {
+      token: refreshToken,
+      type: TokenTypes.REFRESH,
+      blacklisted: false,
+    },
   });
   if (!refreshTokenDoc) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
+    throw new NotFoundError('Not found');
   }
-  await refreshTokenDoc.remove();
+  await refreshTokenDoc.destroy();
 };
 
 export const refreshAuth = async (refreshToken: string) => {
@@ -42,14 +43,14 @@ export const refreshAuth = async (refreshToken: string) => {
       refreshToken,
       TokenTypes.REFRESH,
     );
-    const user = await UserService.getUserById(refreshTokenDoc.user);
+    const user = await UserService.getUserById(refreshTokenDoc.userId);
     if (!user) {
       throw new Error('User not found');
     }
-    await refreshTokenDoc.remove();
+    await refreshTokenDoc.destroy();
     return TokenService.generateAuthTokens(user);
   } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate');
+    throw new AuthError('Please authenticate');
   }
 };
 
@@ -62,14 +63,19 @@ export const resetPassword = async (
       resetPasswordToken,
       TokenTypes.RESET_PASSWORD,
     );
-    const user = await UserService.getUserById(resetPasswordTokenDoc.user);
+    const user = await UserService.getUserById(resetPasswordTokenDoc.userId);
     if (!user) {
       throw new Error();
     }
     await UserService.updateUserById(user.id, { password: newPassword });
-    await Token.deleteMany({ user: user.id, type: TokenTypes.RESET_PASSWORD });
+    await Token.destroy({
+      where: {
+        userId: user.id,
+        type: TokenTypes.RESET_PASSWORD,
+      },
+    });
   } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Password reset failed');
+    throw new AuthError('Password reset failed');
   }
 };
 
@@ -79,13 +85,18 @@ export const verifyEmail = async (verifyEmailToken: string) => {
       verifyEmailToken,
       TokenTypes.VERIFY_EMAIL,
     );
-    const user = await UserService.getUserById(verifyEmailTokenDoc.user);
+    const user = await UserService.getUserById(verifyEmailTokenDoc.userId);
     if (!user) {
       throw new Error();
     }
-    await Token.deleteMany({ user: user.id, type: TokenTypes.VERIFY_EMAIL });
+    await Token.destroy({
+      where: {
+        userId: user.id,
+        type: TokenTypes.VERIFY_EMAIL,
+      },
+    });
     await UserService.updateUserById(user.id, { isEmailVerified: true });
   } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Email verification failed');
+    throw new AuthError('Email verification failed');
   }
 };

@@ -1,44 +1,58 @@
-import mongoose from 'mongoose';
-import { toJSON } from './plugins';
-import TokenTypes from '../configs/token';
+import Sequelize, { Model, Optional } from 'sequelize';
 
-const tokenSchema = new mongoose.Schema(
-  {
-    token: {
-      type: String,
-      required: true,
-      index: true,
-    },
-    user: {
-      type: mongoose.SchemaTypes.ObjectId,
-      ref: 'User',
-      required: true,
-    },
-    type: {
-      type: String,
-      enum: [
-        TokenTypes.REFRESH,
-        TokenTypes.RESET_PASSWORD,
-        TokenTypes.VERIFY_EMAIL,
-      ],
-      required: true,
-    },
-    expires: {
-      type: Date,
-      required: true,
-    },
-    blacklisted: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  {
-    timestamps: true,
-  },
-);
+export interface IToken {
+  id: string;
+  token: string;
+  userId: string;
+  type: string;
+  expires: string;
+  blacklisted: boolean;
+}
 
-tokenSchema.plugin(toJSON);
+type CreationAttributes = Optional<IToken, 'id'>;
+export class Token extends Model<IToken, CreationAttributes> implements IToken {
+  id!: string;
+  token!: string;
+  userId!: string;
+  type!: string;
+  expires!: string;
+  blacklisted!: boolean;
+}
 
-const Token = mongoose.model('Token', tokenSchema);
-
-export { Token };
+export const initModel = (connection: Sequelize.Sequelize): void => {
+  Token.init(
+    {
+      id: {
+        type: Sequelize.BIGINT,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      token: {
+        type: Sequelize.STRING(1000),
+      },
+      userId: {
+        type: Sequelize.BIGINT,
+        allowNull: false,
+      },
+      type: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      expires: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      blacklisted: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+    },
+    {
+      timestamps: true,
+      sequelize: connection,
+      modelName: 'Token',
+      tableName: 'token',
+    },
+  );
+};

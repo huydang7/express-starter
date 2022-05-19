@@ -70,6 +70,7 @@ const verifyEmail = catchAsync(async (req, res) => {
 
 router.post('/register', AuthValidator.validateRegister, register);
 router.post('/login', AuthValidator.validateLogin, login);
+
 router.post('/logout', AuthValidator.validateLogout, logout);
 router.post(
   '/refresh-tokens',

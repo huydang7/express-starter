@@ -49,6 +49,10 @@ module.exports = () => ({
           from: 'public',
           to: 'public',
         },
+        {
+          from: 'files',
+          to: 'files',
+        },
       ],
     }),
   ],

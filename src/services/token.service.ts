@@ -1,13 +1,10 @@
 import jwt from 'jsonwebtoken';
 import moment, { Moment } from 'moment';
-import httpStatus from 'http-status';
-
-import { Token } from '../models';
-
-import { ApiError } from '../exceptions/api-error';
 import config from '../configs/config';
 import TokenTypes from '../configs/token';
 import { UserService } from '.';
+import { Token } from '../models/token.model';
+import { NotFoundError } from '../exceptions';
 
 export const generateToken = (
   data: any,
@@ -33,8 +30,8 @@ export const saveToken = async (
 ) => {
   const tokenDoc = await Token.create({
     token,
-    user: userId,
-    expires: expires.toDate(),
+    userId: userId,
+    expires: expires.format(),
     type,
     blacklisted,
   });
@@ -44,10 +41,12 @@ export const saveToken = async (
 export const verifyToken = async (token: string, type: string) => {
   const payload: any = jwt.verify(token, config.jwt.secret);
   const tokenDoc = await Token.findOne({
-    token,
-    type,
-    user: payload.sub.id,
-    blacklisted: false,
+    where: {
+      token,
+      type,
+      userId: payload.sub.id,
+      blacklisted: false,
+    },
   });
   if (!tokenDoc) {
     throw new Error('Token not found');
@@ -97,7 +96,7 @@ export const generateAuthTokens = async (user: any) => {
 export const generateResetPasswordToken = async (email: string) => {
   const user = await UserService.getUserByEmail(email);
   if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this email');
+    throw new NotFoundError('No users found with this email');
   }
   const expires = moment().add(
     config.jwt.resetPasswordExpirationMinutes,
