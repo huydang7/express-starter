@@ -50,14 +50,14 @@ const deleteUser = catchAsync(async (req, res) => {
 
 router
   .route('/')
-  .post(requireRoles([Role.admin]), Validator.createUser, createUser)
-  .get(requireRoles([Role.admin]), Validator.getUsers, getUsers)
+  .post(requireRoles([Role.ADMIN]), Validator.createUser, createUser)
+  .get(requireRoles([Role.ADMIN]), Validator.getUsers, getUsers)
   .patch(auth(), Validator.updateProfile, updateProfile);
 
 router
   .route('/:userId')
-  .get(requireRoles([Role.admin]), Validator.getUser, getUser)
-  .patch(requireRoles([Role.admin]), Validator.updateUser, updateUser)
-  .delete(requireRoles([Role.admin]), Validator.getUser, deleteUser);
+  .get(requireRoles([Role.ADMIN]), Validator.getUser, getUser)
+  .patch(requireRoles([Role.ADMIN]), Validator.updateUser, updateUser)
+  .delete(requireRoles([Role.ADMIN]), Validator.getUser, deleteUser);
 
 export default router;

@@ -1,6 +1,6 @@
 import httpStatus from 'http-status';
 import { ApiError } from '../exceptions/api-error';
-import { User } from '../models';
+import { IUser, User } from '../models';
 
 export const createUser = async (userBody: any) => {
   if (await User.isEmailTaken(userBody.email)) {
@@ -15,7 +15,7 @@ export const queryUsers = async (filter: any, options: any) => {
   return users;
 };
 
-export const getUserById = async (id: string) => {
+export const getUserById = async (id: string | IUser) => {
   return User.findById(id);
 };
 

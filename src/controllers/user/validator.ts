@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { Role } from '../../configs/roles';
 import validate from '../../middlewares/validate';
 import { password, objectId } from '../validators';
 
@@ -8,7 +9,7 @@ export const createUser = validate({
       email: Joi.string().required().email(),
       password: Joi.string().required().custom(password),
       name: Joi.string().required(),
-      role: Joi.string().required().valid('user', 'admin', 'marketer'),
+      role: Joi.string().required().valid(Role.ADMIN, Role.USER),
     })
     .options({ allowUnknown: true }),
 });

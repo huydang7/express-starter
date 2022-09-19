@@ -1,11 +1,10 @@
-import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+import mongoose, { Document } from 'mongoose';
 import mongooseDelete from 'mongoose-delete';
 import mongoosePaginate from 'mongoose-paginate-v2';
 import validator from 'validator';
-import bcrypt from 'bcryptjs';
-import { toJSON } from './plugins';
 import { Role } from '../configs/roles';
-import { Document } from 'mongoose';
+import { toJSON } from './plugins';
 
 export interface IUser extends Document {
   name: string;
@@ -59,7 +58,7 @@ const userSchema = new mongoose.Schema<IUser>(
     role: {
       type: String,
       enum: Role,
-      default: 'user',
+      default: Role.USER,
     },
     isEmailVerified: {
       type: Boolean,
