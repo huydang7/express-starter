@@ -61,9 +61,9 @@ export const initModel = (connection: Sequelize.Sequelize): void => {
         },
       },
       role: {
-        type: Sequelize.ENUM(Role.admin, Role.user),
+        type: Sequelize.ENUM(Role.ADMIN, Role.USER),
         allowNull: false,
-        defaultValue: Role.user,
+        defaultValue: Role.USER,
       },
       isEmailVerified: {
         type: Sequelize.BOOLEAN,

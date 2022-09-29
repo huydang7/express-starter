@@ -1,10 +1,10 @@
 enum Role {
-  admin = 'admin',
-  user = 'user',
+  ADMIN = 'ADMIN',
+  USER = 'USER',
 }
 
 enum RoleRights {
-  adminOnly,
+  AdminOnly,
 }
 
 type RoleRightsMap = {
@@ -12,8 +12,8 @@ type RoleRightsMap = {
 };
 
 const AllRoles: RoleRightsMap = {
-  admin: [RoleRights.adminOnly],
-  user: [],
+  ADMIN: [RoleRights.AdminOnly],
+  USER: [],
 };
 
 export { Role, RoleRights, AllRoles };
