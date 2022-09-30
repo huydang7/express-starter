@@ -1,4 +1,4 @@
-import { Sequelize } from 'sequelize/types';
+import { Sequelize } from 'sequelize';
 
 import * as UserModel from './user.model';
 import * as TokenModel from './token.model';
