@@ -39,10 +39,10 @@ export const initModel = (connection: Sequelize.Sequelize): void => {
   User.init(
     {
       id: {
-        type: Sequelize.BIGINT,
+        type: Sequelize.UUID,
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
+        defaultValue: Sequelize.UUIDV4,
       },
       name: {
         type: Sequelize.STRING,

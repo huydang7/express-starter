@@ -23,16 +23,16 @@ export const initModel = (connection: Sequelize.Sequelize): void => {
   Token.init(
     {
       id: {
-        type: Sequelize.BIGINT,
+        type: Sequelize.UUID,
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
+        defaultValue: Sequelize.UUIDV4,
       },
       token: {
         type: Sequelize.STRING(1000),
       },
       userId: {
-        type: Sequelize.BIGINT,
+        type: Sequelize.UUID,
         allowNull: false,
       },
       type: {
