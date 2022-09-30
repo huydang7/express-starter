@@ -1,12 +1,5 @@
 import Joi from 'joi';
 
-export const objectId: Joi.CustomValidator<any> = (value) => {
-  if (!value.match(/^[0-9a-fA-F]{24}$/)) {
-    throw new Error('"{{#label}}" must be a valid mongo id');
-  }
-  return value;
-};
-
 export const password: Joi.CustomValidator<any> = (value) => {
   if (value.length < 8) {
     throw new Error('password must be at least 8 characters');
