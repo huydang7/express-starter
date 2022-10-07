@@ -1,4 +1,4 @@
-import config from '../configs/config';
+import config from '../configs/env';
 
 import { logger, dbLogger } from '../configs/logger';
 

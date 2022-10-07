@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import moment, { Moment } from 'moment';
-import config from '../configs/config';
+import config from '../configs/env';
 import TokenTypes from '../configs/token';
 import { UserService } from '.';
 import { Token } from '../models/token.model';
@@ -26,14 +26,12 @@ export const saveToken = async (
   userId: string,
   expires: Moment,
   type: string,
-  blacklisted = false,
 ) => {
   const tokenDoc = await Token.create({
     token,
     userId: userId,
     expires: expires.format(),
     type,
-    blacklisted,
   });
   return tokenDoc;
 };
@@ -45,7 +43,6 @@ export const verifyToken = async (token: string, type: string) => {
       token,
       type,
       userId: payload.sub.id,
-      blacklisted: false,
     },
   });
   if (!tokenDoc) {

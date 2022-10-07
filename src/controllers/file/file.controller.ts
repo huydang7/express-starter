@@ -1,5 +1,5 @@
 import express from 'express';
-import config from '../../configs/config';
+import config from '../../configs/env';
 import { BadRequest } from '../../exceptions';
 import { getFileUploadMiddleware } from './upload-middleware';
 

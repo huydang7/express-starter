@@ -28,7 +28,6 @@ export const logout = async (refreshToken: string) => {
     where: {
       token: refreshToken,
       type: TokenTypes.REFRESH,
-      blacklisted: false,
     },
   });
   if (!refreshTokenDoc) {

@@ -1,8 +1,8 @@
 const TokenTypes = {
-  ACCESS: 'access',
-  REFRESH: 'refresh',
-  RESET_PASSWORD: 'resetPassword',
-  VERIFY_EMAIL: 'verifyEmail',
+  ACCESS: 'ACCESS',
+  REFRESH: 'REFRESH',
+  RESET_PASSWORD: 'RESET_PASSWORD',
+  VERIFY_EMAIL: 'VERIFY_EMAIL',
 };
 
 export default TokenTypes;

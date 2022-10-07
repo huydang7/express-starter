@@ -6,7 +6,6 @@ export interface IToken {
   userId: string;
   type: string;
   expires: string;
-  blacklisted: boolean;
 }
 
 type CreationAttributes = Optional<IToken, 'id'>;
@@ -16,7 +15,6 @@ export class Token extends Model<IToken, CreationAttributes> implements IToken {
   userId!: string;
   type!: string;
   expires!: string;
-  blacklisted!: boolean;
 }
 
 export const initModel = (connection: Sequelize.Sequelize): void => {
@@ -42,10 +40,6 @@ export const initModel = (connection: Sequelize.Sequelize): void => {
       expires: {
         type: Sequelize.DATE,
         allowNull: false,
-      },
-      blacklisted: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
       },
     },
     {

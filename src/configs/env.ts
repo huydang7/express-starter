@@ -10,6 +10,7 @@ const envVarsSchema = Joi.object()
       .valid('production', 'development', 'test')
       .required(),
     PORT: Joi.number().default(3000),
+
     DB_NAME: Joi.string().required(),
     DB_HOST: Joi.string().required(),
     DB_USERNAME: Joi.string().required(),
@@ -28,6 +29,7 @@ const envVarsSchema = Joi.object()
     JWT_VERIFY_EMAIL_EXPIRATION_MINUTES: Joi.number()
       .default(10)
       .description('minutes after which verify email token expires'),
+
     SMTP_HOST: Joi.string().description('server that will send the emails'),
     SMTP_PORT: Joi.number().description('port to connect to the email server'),
     SMTP_USERNAME: Joi.string().description('username for email server'),
@@ -35,6 +37,8 @@ const envVarsSchema = Joi.object()
     EMAIL_FROM: Joi.string().description(
       'the from field in the emails sent by the app',
     ),
+    HOST_URL: Joi.string().description('host url for the api'),
+    WEB_APP_URL: Joi.string().description('web app url'),
   })
   .unknown();
 
@@ -50,6 +54,7 @@ export default {
   env: envVars.NODE_ENV,
   port: envVars.PORT,
   host_url: envVars.HOST_URL,
+  web_app_url: envVars.WEB_APP_URL,
   db: {
     host: envVars.DB_HOST,
     name: envVars.DB_NAME,

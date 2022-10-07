@@ -1,5 +1,5 @@
 import app from './app';
-import config from './configs/config';
+import config from './configs/env';
 import { logger } from './configs/logger';
 import { initDb } from './database/connection';
 
