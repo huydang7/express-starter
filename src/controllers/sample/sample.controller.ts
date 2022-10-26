@@ -4,7 +4,7 @@ import { Role } from '../../configs/roles';
 import { BaseError } from '../../exceptions/base-error';
 import { requireRoles } from '../../middlewares/auth';
 import { SampleService } from '../../services';
-import { catchAsync, pick } from '../../utils';
+import { catchAsync, pick } from '../../shared/utils';
 import * as Validator from './validator';
 
 const router = express.Router();

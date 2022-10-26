@@ -1,4 +1,4 @@
-import { defaultPageSize } from '../global/constants';
+import { defaultPageSize } from '../shared/constants';
 import { IOrder, IPagination, Sort } from './type/common';
 
 type OrderKey = 'byCreatedAt' | 'byOrder';

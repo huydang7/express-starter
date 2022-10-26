@@ -3,7 +3,7 @@ import { Role } from '../../configs/roles';
 import { NotFoundError } from '../../exceptions';
 import { auth, requireRoles } from '../../middlewares/auth';
 import { UserService } from '../../services';
-import { catchAsync, pick } from '../../utils';
+import { catchAsync, pick } from '../../shared/utils';
 import * as Validator from './validator';
 
 const router = express.Router();

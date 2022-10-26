@@ -1,6 +1,7 @@
 import Joi from 'joi';
 import path from 'path';
 import * as dotenv from 'dotenv';
+import 'dotenv/config';
 
 dotenv.config({ path: path.join(__dirname, '../.env') });
 

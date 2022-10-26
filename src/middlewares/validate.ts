@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import pick from '../utils/pick';
+import pick from '../shared/utils/pick';
 import { BadRequest } from '../exceptions';
 
 const validate = (schema: any) => (req: any, res: any, next: any) => {

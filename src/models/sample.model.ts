@@ -1,5 +1,6 @@
 import Sequelize, { Model, Optional } from 'sequelize';
-import { enumToArray } from '../global/utils';
+import { enumToArray } from '../shared/utils';
+
 import { ITimestamp } from './base';
 
 export enum SampleType {

@@ -6,7 +6,7 @@ import {
   UserService,
   EmailService,
 } from '../../services';
-import { catchAsync } from '../../utils';
+import { catchAsync } from '../../shared/utils';
 import * as AuthValidator from './validator';
 
 const router = express.Router();
