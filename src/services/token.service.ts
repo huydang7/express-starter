@@ -24,7 +24,7 @@ export const saveToken = async (
   token: string,
   userId: string,
   expires: Moment,
-  type: string,
+  type: TokenType,
 ) => {
   return await Token.create({
     token,

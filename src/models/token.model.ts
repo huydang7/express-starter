@@ -12,7 +12,7 @@ export interface IToken {
   id: string;
   token: string;
   userId: string;
-  type: string;
+  type: TokenType;
   expires: string;
 }
 
@@ -21,7 +21,7 @@ export class Token extends Model<IToken, CreationAttributes> implements IToken {
   id!: string;
   token!: string;
   userId!: string;
-  type!: string;
+  type!: TokenType;
   expires!: string;
 }
 
