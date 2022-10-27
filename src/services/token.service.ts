@@ -9,7 +9,7 @@ import { IUser } from '../models/user.model';
 export const generateToken = (
   data: any,
   expires: Moment,
-  type: string,
+  type: TokenType,
   secret = env.jwt.secret,
 ) => {
   const payload = {
