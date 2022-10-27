@@ -4,6 +4,7 @@ import env from '../configs/env';
 import { UserService } from '.';
 import { Token, TokenType } from '../models/token.model';
 import { NotFoundError } from '../exceptions';
+import { IUser } from '../models/user.model';
 
 export const generateToken = (
   data: any,
@@ -34,7 +35,7 @@ export const saveToken = async (
   });
 };
 
-export const verifyToken = async (token: string, type: string) => {
+export const verifyToken = async (token: string, type: TokenType) => {
   const payload: any = jwt.verify(token, env.jwt.secret);
   const result = await Token.findOne({
     where: {
@@ -49,7 +50,7 @@ export const verifyToken = async (token: string, type: string) => {
   return result;
 };
 
-export const generateAuthTokens = async (user: any) => {
+export const generateAuthTokens = async (user: IUser) => {
   const accessTokenExpires = moment().add(
     env.jwt.accessExpirationMinutes,
     'minutes',
@@ -107,7 +108,7 @@ export const generateResetPasswordToken = async (email: string) => {
   return resetPasswordToken;
 };
 
-export const generateVerifyEmailToken = async (user: any) => {
+export const generateVerifyEmailToken = async (user: IUser) => {
   const expires = moment().add(env.jwt.verifyEmailExpirationMinutes, 'minutes');
   const verifyEmailToken = generateToken(user, expires, TokenType.VERIFY_EMAIL);
   await saveToken(verifyEmailToken, user.id, expires, TokenType.VERIFY_EMAIL);
