@@ -26,28 +26,27 @@ export const saveToken = async (
   expires: Moment,
   type: string,
 ) => {
-  const tokenDoc = await Token.create({
+  return await Token.create({
     token,
     userId: userId,
     expires: expires.format(),
     type,
   });
-  return tokenDoc;
 };
 
 export const verifyToken = async (token: string, type: string) => {
   const payload: any = jwt.verify(token, env.jwt.secret);
-  const tokenDoc = await Token.findOne({
+  const result = await Token.findOne({
     where: {
       token,
       type,
       userId: payload.sub.id,
     },
   });
-  if (!tokenDoc) {
+  if (!result) {
     throw new Error('Token not found');
   }
-  return tokenDoc;
+  return result;
 };
 
 export const generateAuthTokens = async (user: any) => {
