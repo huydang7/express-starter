@@ -1,7 +1,7 @@
 import { IUser } from '../models/user.model';
-import TokenTypes from '../configs/token';
+
 import { TokenService, UserService } from '.';
-import { Token } from '../models/token.model';
+import { Token, TokenType } from '../models/token.model';
 import { AuthError, NotFoundError } from '../exceptions';
 
 export const register = async (user: IUser) => {
@@ -27,7 +27,7 @@ export const logout = async (refreshToken: string) => {
   const refreshTokenDoc = await Token.findOne({
     where: {
       token: refreshToken,
-      type: TokenTypes.REFRESH,
+      type: TokenType.REFRESH,
     },
   });
   if (!refreshTokenDoc) {
@@ -40,7 +40,7 @@ export const refreshAuth = async (refreshToken: string) => {
   try {
     const refreshTokenDoc = await TokenService.verifyToken(
       refreshToken,
-      TokenTypes.REFRESH,
+      TokenType.REFRESH,
     );
     const user = await UserService.getUserById(refreshTokenDoc.userId);
     if (!user) {
@@ -60,7 +60,7 @@ export const resetPassword = async (
   try {
     const resetPasswordTokenDoc = await TokenService.verifyToken(
       resetPasswordToken,
-      TokenTypes.RESET_PASSWORD,
+      TokenType.RESET_PASSWORD,
     );
     const user = await UserService.getUserById(resetPasswordTokenDoc.userId);
     if (!user) {
@@ -70,7 +70,7 @@ export const resetPassword = async (
     await Token.destroy({
       where: {
         userId: user.id,
-        type: TokenTypes.RESET_PASSWORD,
+        type: TokenType.RESET_PASSWORD,
       },
     });
   } catch (error) {
@@ -82,7 +82,7 @@ export const verifyEmail = async (verifyEmailToken: string) => {
   try {
     const verifyEmailTokenDoc = await TokenService.verifyToken(
       verifyEmailToken,
-      TokenTypes.VERIFY_EMAIL,
+      TokenType.VERIFY_EMAIL,
     );
     const user = await UserService.getUserById(verifyEmailTokenDoc.userId);
     if (!user) {
@@ -91,7 +91,7 @@ export const verifyEmail = async (verifyEmailToken: string) => {
     await Token.destroy({
       where: {
         userId: user.id,
-        type: TokenTypes.VERIFY_EMAIL,
+        type: TokenType.VERIFY_EMAIL,
       },
     });
     await UserService.updateUserById(user.id, { isEmailVerified: true });

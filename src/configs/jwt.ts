@@ -1,6 +1,6 @@
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+import { TokenType } from '../models/token.model';
 import config from './env';
-import TokenTypes from './token';
 
 const jwtOptions = {
   secretOrKey: config.jwt.secret,
@@ -9,7 +9,7 @@ const jwtOptions = {
 
 const jwtVerify = async (payload: any, done: any) => {
   try {
-    if (payload.type !== TokenTypes.ACCESS) {
+    if (payload.type !== TokenType.ACCESS) {
       throw new Error('Invalid token type');
     }
 

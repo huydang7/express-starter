@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { Role } from '../configs/roles';
 import Sequelize, { Model, Optional } from 'sequelize';
+import { enumToArray } from '../shared/utils';
 
 export interface IUser {
   id: string;
@@ -61,9 +62,12 @@ export const initModel = (connection: Sequelize.Sequelize): void => {
         },
       },
       role: {
-        type: Sequelize.ENUM(Role.ADMIN, Role.USER),
+        type: Sequelize.STRING,
         allowNull: false,
         defaultValue: Role.USER,
+        validate: {
+          isIn: [enumToArray(Role)],
+        },
       },
       isEmailVerified: {
         type: Sequelize.BOOLEAN,

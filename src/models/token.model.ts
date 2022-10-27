@@ -1,4 +1,12 @@
 import Sequelize, { Model, Optional } from 'sequelize';
+import { enumToArray } from '../shared/utils';
+
+export enum TokenType {
+  ACCESS = 'ACCESS',
+  REFRESH = 'REFRESH',
+  RESET_PASSWORD = 'RESET_PASSWORD',
+  VERIFY_EMAIL = 'VERIFY_EMAIL',
+}
 
 export interface IToken {
   id: string;
@@ -36,6 +44,9 @@ export const initModel = (connection: Sequelize.Sequelize): void => {
       type: {
         type: Sequelize.STRING,
         allowNull: false,
+        validate: {
+          isIn: [enumToArray(TokenType)],
+        },
       },
       expires: {
         type: Sequelize.DATE,

@@ -1,16 +1,15 @@
 import jwt from 'jsonwebtoken';
 import moment, { Moment } from 'moment';
-import config from '../configs/env';
-import TokenTypes from '../configs/token';
+import env from '../configs/env';
 import { UserService } from '.';
-import { Token } from '../models/token.model';
+import { Token, TokenType } from '../models/token.model';
 import { NotFoundError } from '../exceptions';
 
 export const generateToken = (
   data: any,
   expires: Moment,
   type: string,
-  secret = config.jwt.secret,
+  secret = env.jwt.secret,
 ) => {
   const payload = {
     sub: data,
@@ -37,7 +36,7 @@ export const saveToken = async (
 };
 
 export const verifyToken = async (token: string, type: string) => {
-  const payload: any = jwt.verify(token, config.jwt.secret);
+  const payload: any = jwt.verify(token, env.jwt.secret);
   const tokenDoc = await Token.findOne({
     where: {
       token,
@@ -53,29 +52,25 @@ export const verifyToken = async (token: string, type: string) => {
 
 export const generateAuthTokens = async (user: any) => {
   const accessTokenExpires = moment().add(
-    config.jwt.accessExpirationMinutes,
+    env.jwt.accessExpirationMinutes,
     'minutes',
   );
-  const accessToken = generateToken(
-    user,
-    accessTokenExpires,
-    TokenTypes.ACCESS,
-  );
+  const accessToken = generateToken(user, accessTokenExpires, TokenType.ACCESS);
 
   const refreshTokenExpires = moment().add(
-    config.jwt.refreshExpirationDays,
+    env.jwt.refreshExpirationDays,
     'days',
   );
   const refreshToken = generateToken(
     user,
     refreshTokenExpires,
-    TokenTypes.REFRESH,
+    TokenType.REFRESH,
   );
   await saveToken(
     refreshToken,
     user.id,
     refreshTokenExpires,
-    TokenTypes.REFRESH,
+    TokenType.REFRESH,
   );
 
   return {
@@ -96,33 +91,26 @@ export const generateResetPasswordToken = async (email: string) => {
     throw new NotFoundError('No users found with this email');
   }
   const expires = moment().add(
-    config.jwt.resetPasswordExpirationMinutes,
+    env.jwt.resetPasswordExpirationMinutes,
     'minutes',
   );
   const resetPasswordToken = generateToken(
     user,
     expires,
-    TokenTypes.RESET_PASSWORD,
+    TokenType.RESET_PASSWORD,
   );
   await saveToken(
     resetPasswordToken,
     user.id,
     expires,
-    TokenTypes.RESET_PASSWORD,
+    TokenType.RESET_PASSWORD,
   );
   return resetPasswordToken;
 };
 
 export const generateVerifyEmailToken = async (user: any) => {
-  const expires = moment().add(
-    config.jwt.verifyEmailExpirationMinutes,
-    'minutes',
-  );
-  const verifyEmailToken = generateToken(
-    user,
-    expires,
-    TokenTypes.VERIFY_EMAIL,
-  );
-  await saveToken(verifyEmailToken, user.id, expires, TokenTypes.VERIFY_EMAIL);
+  const expires = moment().add(env.jwt.verifyEmailExpirationMinutes, 'minutes');
+  const verifyEmailToken = generateToken(user, expires, TokenType.VERIFY_EMAIL);
+  await saveToken(verifyEmailToken, user.id, expires, TokenType.VERIFY_EMAIL);
   return verifyEmailToken;
 };
