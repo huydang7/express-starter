@@ -1,5 +1,5 @@
+import validate from '@middlewares/validate';
 import Joi from 'joi';
-import validate from '../../middlewares/validate';
 
 export const createSample = validate({
   body: Joi.object().keys({}).options({ allowUnknown: true }),

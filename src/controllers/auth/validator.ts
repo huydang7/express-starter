@@ -1,6 +1,6 @@
-import Joi from 'joi';
-import validate from '../../middlewares/validate';
 import { password } from '../validators';
+import validate from '@middlewares/validate';
+import Joi from 'joi';
 
 export const validateRegister = validate({
   body: Joi.object().keys({
@@ -23,7 +23,7 @@ export const validateLogout = validate({
   }),
 });
 
-export const validateRefreshTokens = validate({
+export const validateRefreshToken = validate({
   body: Joi.object().keys({
     refreshToken: Joi.string().required(),
   }),

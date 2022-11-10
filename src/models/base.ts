@@ -1,12 +1,6 @@
 import sequelize from 'sequelize';
 
-export interface ITimestamp {
-  createdAt?: string;
-  updatedAt?: string;
-  deletedAt?: string;
-}
-
-export const TimeStampDefinition = {
+export const TimestampDefinition = {
   createdAt: {
     type: sequelize.DATE,
   },
@@ -20,9 +14,9 @@ export const TimeStampDefinition = {
 
 export const UserModifyingDefinition = {
   createdBy: {
-    type: sequelize.STRING,
+    type: sequelize.UUID,
   },
   updatedBy: {
-    type: sequelize.STRING,
+    type: sequelize.UUID,
   },
 };

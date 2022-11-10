@@ -1,17 +1,6 @@
 {
-  "jsc": {
-    "externalHelpers": false,
-    "parser": {
-      "syntax": "typescript",
-      "tsx": true,
-      "decorators": true,
-      "dynamicImport": true
-    },
-    "transform": {
-      "legacyDecorator": true,
-      "decoratorMetadata": true
-    },
-    "baseUrl": "",
+  "compilerOptions": {
+    "baseUrl": ".",
     "paths": {
       "@src": ["src"],
       "@src/*": ["src/*"],
@@ -34,8 +23,5 @@
       "@shared": ["src/shared"],
       "@shared/*": ["src/shared/*"]
     }
-  },
-  "module": {
-    "type": "commonjs"
   }
 }

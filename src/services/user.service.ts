@@ -1,5 +1,5 @@
-import { BadRequest, NotFoundError } from '../exceptions';
-import { User } from '../models/user.model';
+import { BadRequest, NotFoundError } from '@exceptions';
+import { User } from '@models/user.model';
 
 export const createUser = async (userBody: any) => {
   if (await User.isEmailTaken(userBody.email)) {
@@ -31,10 +31,10 @@ export const getUserByEmail = async (email: string) => {
 export const updateUserById = async (userId: string, updateBody: any) => {
   const user = await getUserById(userId);
   if (!user) {
-    throw new NotFoundError('User not found');
+    throw new NotFoundError('user not found');
   }
   if (updateBody.email && (await User.isEmailTaken(updateBody.email))) {
-    throw new BadRequest('Email already taken', 100);
+    throw new BadRequest('email already taken', 100);
   }
 
   const res = await User.update(updateBody, { where: { id: userId } });
@@ -44,7 +44,7 @@ export const updateUserById = async (userId: string, updateBody: any) => {
 export const deleteUserById = async (userId: string) => {
   const user = await getUserById(userId);
   if (!user) {
-    throw new NotFoundError('User not found');
+    throw new NotFoundError('user not found');
   }
   await User.destroy({ where: { id: userId } });
   return user;

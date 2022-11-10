@@ -1,13 +1,15 @@
-import express from 'express';
-import { auth } from '../../middlewares/auth';
+import * as AuthValidator from './validator';
+import { BaseError } from '@exceptions/base-error';
+import { auth } from '@middlewares/auth';
 import {
   AuthService,
+  EmailService,
   TokenService,
   UserService,
-  EmailService,
-} from '../../services';
-import { catchAsync } from '../../shared/utils';
-import * as AuthValidator from './validator';
+} from '@services';
+import { catchAsync } from '@shared/utils';
+import express from 'express';
+import httpStatus from 'http-status';
 
 const router = express.Router();
 
@@ -22,7 +24,6 @@ const login = catchAsync(async (req, res) => {
     email,
     password,
   );
-
   res.formatter(result);
 });
 
@@ -30,11 +31,13 @@ const logout = catchAsync(async (req, res) => {
   await AuthService.logout(req.body.refreshToken);
   res.formatter(true);
 });
+
 const getMe = catchAsync(async (req, res) => {
   const user = await UserService.getUserById(req?.user?.id as string);
   res.formatter(user);
 });
-const refreshTokens = catchAsync(async (req, res) => {
+
+const refreshToken = catchAsync(async (req, res) => {
   const tokens = await AuthService.refreshAuth(req.body.refreshToken);
   res.formatter(tokens);
 });
@@ -53,6 +56,9 @@ const resetPassword = catchAsync(async (req, res) => {
 });
 
 const sendVerificationEmail = catchAsync(async (req, res) => {
+  if (!req.user) {
+    throw new BaseError(httpStatus.BAD_REQUEST, 'user not found');
+  }
   const verifyEmailToken = await TokenService.generateVerifyEmailToken(
     req.user,
   );
@@ -70,13 +76,8 @@ const verifyEmail = catchAsync(async (req, res) => {
 
 router.post('/register', AuthValidator.validateRegister, register);
 router.post('/login', AuthValidator.validateLogin, login);
-
 router.post('/logout', AuthValidator.validateLogout, logout);
-router.post(
-  '/refresh-tokens',
-  AuthValidator.validateRefreshTokens,
-  refreshTokens,
-);
+router.post('/refresh-token', AuthValidator.validateRefreshToken, refreshToken);
 router.post(
   '/forgot-password',
   AuthValidator.validateForgotPassword,

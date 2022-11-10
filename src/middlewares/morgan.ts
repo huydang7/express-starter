@@ -1,5 +1,5 @@
+import { logger } from '@configs/logger';
 import morgan from 'morgan';
-import { logger } from '../configs/logger';
 
 const responseFormat = (tokens: any, req: any, res: any) => {
   return `Got Request: ip(${tokens['remote-addr'](req)})<${
