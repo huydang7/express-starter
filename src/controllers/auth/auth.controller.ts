@@ -74,6 +74,11 @@ const verifyEmail = catchAsync(async (req, res) => {
   res.formatter(true);
 });
 
+const checkEmailExisted = catchAsync(async (req, res) => {
+  const user = await UserService.getUserByEmail(req?.body?.email as string);
+  res.formatter(!!user);
+});
+
 router.post('/register', AuthValidator.validateRegister, register);
 router.post('/login', AuthValidator.validateLogin, login);
 router.post('/logout', AuthValidator.validateLogout, logout);
@@ -91,5 +96,6 @@ router.post(
 router.post('/send-verification-email', auth(), sendVerificationEmail);
 router.post('/verify-email', AuthValidator.validateVerifyEmail, verifyEmail);
 router.get('/me', auth(), getMe);
+router.post('/check-email', checkEmailExisted);
 
 export default router;

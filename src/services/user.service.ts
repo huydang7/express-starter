@@ -3,7 +3,7 @@ import { User } from '@models/user.model';
 
 export const createUser = async (userBody: any) => {
   if (await User.isEmailTaken(userBody.email)) {
-    throw new BadRequest('Email already taken', 100);
+    throw new BadRequest('email already taken', 100);
   }
   const user = await User.create(userBody);
   return user;
