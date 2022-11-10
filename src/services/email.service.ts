@@ -1,7 +1,7 @@
+import env from '@configs/env';
+import config from '@configs/env';
+import { logger } from '@configs/logger';
 import nodemailer from 'nodemailer';
-import env from '../configs/env';
-import config from '../configs/env';
-import { logger } from '../configs/logger';
 
 export const transport = nodemailer.createTransport(config.email.smtp);
 if (config.env !== 'test') {

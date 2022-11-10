@@ -1,10 +1,11 @@
+import { UserService } from '.';
+import env from '@configs/env';
+import { NotFoundError } from '@exceptions';
+import { TokenType } from '@interfaces/token';
+import { IUser } from '@interfaces/user';
+import { Token } from '@models/token.model';
 import jwt from 'jsonwebtoken';
 import moment, { Moment } from 'moment';
-import env from '../configs/env';
-import { UserService } from '.';
-import { Token, TokenType } from '../models/token.model';
-import { NotFoundError } from '../exceptions';
-import { IUser } from '../models/user.model';
 
 export const generateToken = (
   data: any,
@@ -45,7 +46,7 @@ export const verifyToken = async (token: string, type: TokenType) => {
     },
   });
   if (!result) {
-    throw new Error('Token not found');
+    throw new Error('token not found');
   }
   return result;
 };
@@ -88,7 +89,7 @@ export const generateAuthTokens = async (user: IUser) => {
 export const generateResetPasswordToken = async (email: string) => {
   const user = await UserService.getUserByEmail(email);
   if (!user) {
-    throw new NotFoundError('No users found with this email');
+    throw new NotFoundError('no users found with this email');
   }
   const expires = moment().add(
     env.jwt.resetPasswordExpirationMinutes,

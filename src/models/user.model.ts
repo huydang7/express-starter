@@ -1,16 +1,9 @@
+import { TimestampDefinition } from './base';
+import { Role } from '@configs/roles';
+import { IUser } from '@interfaces/user';
+import { enumToArray } from '@shared/utils';
 import bcrypt from 'bcryptjs';
-import { Role } from '../configs/roles';
-import Sequelize, { Model, Optional } from 'sequelize';
-import { enumToArray } from '../shared/utils';
-
-export interface IUser {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
-  role: Role | string;
-  isEmailVerified: boolean;
-}
+import sequelize, { Model, Optional } from 'sequelize';
 
 type CreationAttributes = Optional<IUser, 'id'>;
 
@@ -19,7 +12,7 @@ export class User extends Model<IUser, CreationAttributes> implements IUser {
   name!: string;
   email!: string;
   password!: string;
-  role!: Role | string;
+  role!: Role;
   isEmailVerified!: boolean;
   static isEmailTaken: (email: string) => Promise<boolean>;
   isPasswordMatch = (password: string) => {
@@ -36,33 +29,33 @@ User.isEmailTaken = async function (email) {
   return !!res;
 };
 
-export const initModel = (connection: Sequelize.Sequelize): void => {
+export const initModel = (connection: sequelize.Sequelize): void => {
   User.init(
     {
       id: {
-        type: Sequelize.UUID,
+        type: sequelize.UUID,
         allowNull: false,
         primaryKey: true,
-        defaultValue: Sequelize.UUIDV4,
+        defaultValue: sequelize.UUIDV4,
       },
       name: {
-        type: Sequelize.STRING,
+        type: sequelize.STRING,
         allowNull: false,
       },
       email: {
-        type: Sequelize.STRING,
+        type: sequelize.STRING,
         allowNull: false,
-        unique: true,
+        unique: 'user_email',
       },
       password: {
-        type: Sequelize.STRING,
+        type: sequelize.STRING,
         allowNull: false,
         set: function (value: string) {
           this.setDataValue('password', bcrypt.hashSync(value, 10));
         },
       },
       role: {
-        type: Sequelize.STRING,
+        type: sequelize.STRING,
         allowNull: false,
         defaultValue: Role.USER,
         validate: {
@@ -70,10 +63,11 @@ export const initModel = (connection: Sequelize.Sequelize): void => {
         },
       },
       isEmailVerified: {
-        type: Sequelize.BOOLEAN,
+        type: sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
       },
+      ...TimestampDefinition,
     },
     {
       timestamps: true,

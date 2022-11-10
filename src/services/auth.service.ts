@@ -1,8 +1,8 @@
-import { IUser } from '../models/user.model';
-
 import { TokenService, UserService } from '.';
-import { Token, TokenType } from '../models/token.model';
-import { AuthError, NotFoundError } from '../exceptions';
+import { AuthError, NotFoundError } from '@exceptions';
+import { TokenType } from '@interfaces/token';
+import { IUser } from '@interfaces/user';
+import { Token } from '@models/token.model';
 
 export const register = async (user: IUser) => {
   const createdUser = await UserService.createUser(user);
@@ -16,7 +16,7 @@ export const loginUserWithEmailAndPassword = async (
 ) => {
   const user = await UserService.getUserByEmail(email);
   if (!user || !user.isPasswordMatch(password)) {
-    throw new AuthError('Incorrect email or password');
+    throw new AuthError('incorrect email or password');
   }
   const tokens = await TokenService.generateAuthTokens(user);
 
@@ -31,7 +31,7 @@ export const logout = async (refreshToken: string) => {
     },
   });
   if (!token) {
-    throw new NotFoundError('Not found');
+    throw new NotFoundError('not found');
   }
   await token.destroy();
 };
@@ -44,12 +44,12 @@ export const refreshAuth = async (refreshToken: string) => {
     );
     const user = await UserService.getUserById(token.userId);
     if (!user) {
-      throw new Error('User not found');
+      throw new Error('user not found');
     }
     await token.destroy();
     return TokenService.generateAuthTokens(user);
   } catch (error) {
-    throw new AuthError('Please authenticate');
+    throw new AuthError('please authenticate');
   }
 };
 
@@ -74,7 +74,7 @@ export const resetPassword = async (
       },
     });
   } catch (error) {
-    throw new AuthError('Password reset failed');
+    throw new AuthError('password reset failed');
   }
 };
 
@@ -96,6 +96,6 @@ export const verifyEmail = async (verifyEmailToken: string) => {
     });
     await UserService.updateUserById(user.id, { isEmailVerified: true });
   } catch (error) {
-    throw new AuthError('Email verification failed');
+    throw new AuthError('email verification failed');
   }
 };

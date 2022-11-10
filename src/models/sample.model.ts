@@ -1,18 +1,7 @@
-import Sequelize, { Model, Optional } from 'sequelize';
-import { enumToArray } from '../shared/utils';
-
-import { ITimestamp } from './base';
-
-export enum SampleType {
-  NORMAL = 'NORMAL',
-  CUSTOM = 'CUSTOM',
-}
-
-export interface ISample extends ITimestamp {
-  id: string;
-  title: string;
-  type: SampleType;
-}
+import { TimestampDefinition } from './base';
+import { ISample, SampleType } from '@interfaces/sample';
+import { enumToArray } from '@shared/utils';
+import sequelize, { Model, Optional } from 'sequelize';
 
 type CreationAttributes = Optional<ISample, 'id'>;
 
@@ -25,25 +14,26 @@ export class Sample
   type!: SampleType;
 }
 
-export const initModel = (connection: Sequelize.Sequelize): void => {
+export const initModel = (connection: sequelize.Sequelize): void => {
   Sample.init(
     {
       id: {
-        type: Sequelize.UUID,
+        type: sequelize.UUID,
         allowNull: false,
         primaryKey: true,
-        defaultValue: Sequelize.UUIDV4,
+        defaultValue: sequelize.UUIDV4,
       },
       title: {
-        type: Sequelize.STRING,
+        type: sequelize.STRING,
         allowNull: false,
       },
       type: {
-        type: Sequelize.STRING,
+        type: sequelize.STRING,
         validate: {
           isIn: [enumToArray(SampleType)],
         },
       },
+      ...TimestampDefinition,
     },
     {
       timestamps: true,

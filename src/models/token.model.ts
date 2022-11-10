@@ -1,20 +1,7 @@
-import Sequelize, { Model, Optional } from 'sequelize';
-import { enumToArray } from '../shared/utils';
-
-export enum TokenType {
-  ACCESS = 'ACCESS',
-  REFRESH = 'REFRESH',
-  RESET_PASSWORD = 'RESET_PASSWORD',
-  VERIFY_EMAIL = 'VERIFY_EMAIL',
-}
-
-export interface IToken {
-  id: string;
-  token: string;
-  userId: string;
-  type: TokenType;
-  expires: string;
-}
+import { TimestampDefinition } from './base';
+import { IToken, TokenType } from '@interfaces/token';
+import { enumToArray } from '@shared/utils';
+import sequelize, { Model, Optional } from 'sequelize';
 
 type CreationAttributes = Optional<IToken, 'id'>;
 export class Token extends Model<IToken, CreationAttributes> implements IToken {
@@ -25,33 +12,34 @@ export class Token extends Model<IToken, CreationAttributes> implements IToken {
   expires!: string;
 }
 
-export const initModel = (connection: Sequelize.Sequelize): void => {
+export const initModel = (connection: sequelize.Sequelize): void => {
   Token.init(
     {
       id: {
-        type: Sequelize.UUID,
+        type: sequelize.UUID,
         allowNull: false,
         primaryKey: true,
-        defaultValue: Sequelize.UUIDV4,
+        defaultValue: sequelize.UUIDV4,
       },
       token: {
-        type: Sequelize.STRING(1000),
+        type: sequelize.STRING(1000),
       },
       userId: {
-        type: Sequelize.UUID,
+        type: sequelize.UUID,
         allowNull: false,
       },
       type: {
-        type: Sequelize.STRING,
+        type: sequelize.STRING,
         allowNull: false,
         validate: {
           isIn: [enumToArray(TokenType)],
         },
       },
       expires: {
-        type: Sequelize.DATE,
+        type: sequelize.DATE,
         allowNull: false,
       },
+      ...TimestampDefinition,
     },
     {
       timestamps: true,

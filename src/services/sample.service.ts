@@ -1,9 +1,9 @@
+import { IPagination } from './shared/common';
+import { getPageSize } from './shared/helper';
+import { BaseError } from '@exceptions/base-error';
+import { ISample } from '@interfaces/sample';
+import { Sample } from '@models/sample.model';
 import httpStatus from 'http-status';
-
-import { BaseError } from '../exceptions/base-error';
-import { Sample, ISample } from '../models/sample.model';
-import { getPageSize } from './helper';
-import { IPagination } from './type/common';
 
 export const createSample = async (sampleBody: Omit<ISample, 'id'>) => {
   return await Sample.create(sampleBody);
@@ -34,7 +34,7 @@ export const updateSampleById = async (
 ) => {
   const sample = await getSampleById(sampleId);
   if (!sample) {
-    throw new BaseError(httpStatus.NOT_FOUND, 'Sample not found');
+    throw new BaseError(httpStatus.NOT_FOUND, 'sample not found');
   }
 
   const res = await Sample.update(updateBody, { where: { id: sampleId } });
@@ -44,7 +44,7 @@ export const updateSampleById = async (
 export const deleteSampleById = async (sampleId: string) => {
   const sample = await getSampleById(sampleId);
   if (!sample) {
-    throw new BaseError(httpStatus.NOT_FOUND, 'Sample not found');
+    throw new BaseError(httpStatus.NOT_FOUND, 'sample not found');
   }
   await Sample.destroy({ where: { id: sampleId } });
   return sample;

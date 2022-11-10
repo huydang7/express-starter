@@ -10,6 +10,11 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "typeRoots": ["./src/shared/types"]
+  },
+  "include": ["src", "**/*.ts"],
+  "exclude": ["node_modules"],
+  "extends": "./tsconfig.paths.json"
 }

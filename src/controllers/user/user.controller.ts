@@ -1,10 +1,10 @@
-import express from 'express';
-import { Role } from '../../configs/roles';
-import { NotFoundError } from '../../exceptions';
-import { auth, requireRoles } from '../../middlewares/auth';
-import { UserService } from '../../services';
-import { catchAsync, pick } from '../../shared/utils';
 import * as Validator from './validator';
+import { Role } from '@configs/roles';
+import { NotFoundError } from '@exceptions';
+import { auth, requireRoles } from '@middlewares/auth';
+import { UserService } from '@services';
+import { catchAsync, pick } from '@shared/utils';
+import express from 'express';
 
 const router = express.Router();
 
@@ -15,7 +15,7 @@ const createUser = catchAsync(async (req, res) => {
 
 const getUsers = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role']);
-  const options = pick(req.query, ['sort', 'limit', 'page']);
+  const options = pick(req.query, ['sort', 'size', 'page']);
   const result = await UserService.queryUsers(filter, options);
   res.formatter(result);
 });
@@ -23,7 +23,7 @@ const getUsers = catchAsync(async (req, res) => {
 const getUser = catchAsync(async (req, res) => {
   const user = await UserService.getUserById(req.params.userId);
   if (!user) {
-    throw new NotFoundError('User not found');
+    throw new NotFoundError('user not found');
   }
   res.formatter(user);
 });

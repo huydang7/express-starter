@@ -1,11 +1,11 @@
+import * as Validator from './validator';
+import { Role } from '@configs/roles';
+import { BaseError } from '@exceptions/base-error';
+import { requireRoles } from '@middlewares/auth';
+import { SampleService } from '@services';
+import { catchAsync, pick } from '@shared/utils';
 import express from 'express';
 import httpStatus from 'http-status';
-import { Role } from '../../configs/roles';
-import { BaseError } from '../../exceptions/base-error';
-import { requireRoles } from '../../middlewares/auth';
-import { SampleService } from '../../services';
-import { catchAsync, pick } from '../../shared/utils';
-import * as Validator from './validator';
 
 const router = express.Router();
 
@@ -24,7 +24,7 @@ const getSamples = catchAsync(async (req, res) => {
 const getSample = catchAsync(async (req, res) => {
   const sample = await SampleService.getSampleById(req.params.id);
   if (!sample) {
-    throw new BaseError(httpStatus.NOT_FOUND, 'Sample not found');
+    throw new BaseError(httpStatus.NOT_FOUND, 'sample not found');
   }
   res.formatter(sample);
 });
