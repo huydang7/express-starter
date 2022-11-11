@@ -28,7 +28,6 @@ module.exports = () => ({
       },
     ],
   },
-  mode: 'development',
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     // alias: {
@@ -85,5 +84,8 @@ module.exports = () => ({
     chunkFilename: '[name].js',
     filename: 'index.js',
     path: path.resolve(__dirname, './dist'),
+  },
+  stats: {
+    errorDetails: true,
   },
 });

@@ -33,16 +33,6 @@ export const initDb = async () => {
     initRelations();
     await connection.sync({});
     logger.info('Database connection initialized.');
-
-    connection.addHook('beforeCreate', (instance) => {
-      instance.setDataValue('id' as any, null); // Disallow manual id
-    });
-
-    connection.addHook('beforeBulkUpdate', (instance: any) => {
-      instance.fields = instance.fields.filter(
-        (column: string) => column !== 'id',
-      );
-    });
   } catch (error: any) {
     logger.error(`Database connection failed: ${error.message}`);
   }
