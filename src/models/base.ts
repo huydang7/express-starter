@@ -3,11 +3,11 @@ import sequelize from 'sequelize';
 export const TimestampDefinition = {
   createdAt: {
     type: sequelize.DATE,
-    defaultValue: sequelize.fn('NOW'),
+    defaultValue: sequelize.fn('now'),
   },
   updatedAt: {
     type: sequelize.DATE,
-    defaultValue: sequelize.fn('NOW'),
+    defaultValue: sequelize.fn('now'),
   },
   deletedAt: {
     type: sequelize.DATE,
