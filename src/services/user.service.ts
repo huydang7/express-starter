@@ -1,3 +1,4 @@
+import { getPageSize } from './shared/helper';
 import { BadRequest, NotFoundError } from '@exceptions';
 import { User } from '@models/user.model';
 
@@ -14,8 +15,7 @@ export const queryUsers = async (filter: any, options: any) => {
     where: {
       ...filter,
     },
-    limit: options.limit,
-    offset: options.offset,
+    ...getPageSize(options),
   });
   return users;
 };
