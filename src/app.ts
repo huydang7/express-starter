@@ -3,7 +3,7 @@ import jwtStrategy from '@configs/jwt';
 import { NotFoundError } from '@exceptions/not-found';
 import { errorHandler } from '@middlewares/error';
 import { responseEnhancer } from '@middlewares/formatter';
-import routes from '@src/controllers/index';
+import routes from '@routes';
 import compression from 'compression';
 import cors from 'cors';
 import express from 'express';
