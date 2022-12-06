@@ -5,6 +5,6 @@ export interface IUser {
   name: string;
   email: string;
   password: string;
-  role: Role | string;
+  role: Role;
   isEmailVerified: boolean;
 }

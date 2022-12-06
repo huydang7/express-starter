@@ -1,54 +1,37 @@
 import { AllRoles, Role, RoleRights } from '@configs/roles';
 import { AuthError, ForbiddenError } from '@exceptions';
+import { IUser } from '@src/interfaces/user';
 import { NextFunction, Request, Response } from 'express';
 import passport from 'passport';
 
-const verifyPermissionCallback =
+const verifyCallback =
   (
     req: Request,
     resolve: any,
     reject: any,
-    requiredRights: RoleRights[],
     options: {
       optional?: boolean;
+      requiredRights?: RoleRights[];
+      requiredRoles?: Role[];
     } = {},
   ) =>
-  async (err: any, user: any, info: any) => {
+  async (err: any, user: IUser, info: any) => {
     if (!options.optional && (err || info || !user)) {
       return reject(new AuthError('please authenticate'));
     }
     req.user = user;
 
-    if (requiredRights.length) {
+    if (options?.requiredRights?.length) {
       const userRights = AllRoles[user.role as Role] || [];
-      const hasRequiredRights = requiredRights.every(
+      const hasRequiredRights = options.requiredRights.every(
         (requiredRight: RoleRights) => userRights.includes(requiredRight),
       );
       if (!hasRequiredRights && req.params.userId !== user.id) {
         return reject(new ForbiddenError('forbidden'));
       }
     }
-
-    resolve();
-  };
-
-const verifyRoleCallback =
-  (
-    req: Request,
-    resolve: any,
-    reject: any,
-    roles: Role[],
-    options: {
-      optional?: boolean;
-    } = {},
-  ) =>
-  async (err: any, user: any, info: any) => {
-    if (!options.optional && (err || info || !user)) {
-      return reject(new AuthError('please authenticate'));
-    }
-    req.user = user;
-    if (roles.length) {
-      const hasRequiredRights = roles.includes(user.role as Role);
+    if (options?.requiredRoles?.length) {
+      const hasRequiredRights = options.requiredRoles.includes(user.role);
       if (!hasRequiredRights && req.params.userId !== user.id) {
         return reject(new ForbiddenError('forbidden'));
       }
@@ -60,59 +43,55 @@ const verifyRoleCallback =
 const requirePermissions =
   (
     roleRights: RoleRights[],
-    options: {
+    options?: {
       optional?: boolean;
-    } = {},
+    },
   ) =>
   async (req: Request, res: Response, next: NextFunction) => {
-    return new Promise((resolve, reject) => {
-      passport.authenticate(
-        'jwt',
-        { session: false },
-        verifyPermissionCallback(req, resolve, reject, roleRights, options),
-      )(req, res, next);
-    })
-      .then(() => next())
-      .catch((err) => {
-        next(err);
-      });
+    return verifyJwt(req, res, next, {
+      ...options,
+      requiredRights: roleRights,
+    });
   };
 
 const requireRoles =
   (
     roles: Role[],
-    options: {
+    options?: {
       optional?: boolean;
-    } = {},
+    },
   ) =>
   async (req: Request, res: Response, next: NextFunction) => {
-    return new Promise((resolve, reject) => {
-      passport.authenticate(
-        'jwt',
-        { session: false },
-        verifyRoleCallback(req, resolve, reject, roles, options),
-      )(req, res, next);
-    })
-      .then(() => next())
-      .catch((err) => {
-        next(err);
-      });
+    return verifyJwt(req, res, next, {
+      ...options,
+      requiredRoles: roles,
+    });
   };
 
 const auth =
-  (options?: { optional: boolean }) =>
+  (options?: { optional?: boolean }) =>
   async (req: Request, res: Response, next: NextFunction) => {
-    return new Promise((resolve, reject) => {
+    return verifyJwt(req, res, next, options);
+  };
+
+const verifyJwt = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+  callbackOpts: any,
+) => {
+  try {
+    await new Promise((resolve, reject) => {
       passport.authenticate(
         'jwt',
         { session: false },
-        verifyRoleCallback(req, resolve, reject, [], options),
+        verifyCallback(req, resolve, reject, callbackOpts),
       )(req, res, next);
-    })
-      .then(() => next())
-      .catch((err) => {
-        next(err);
-      });
-  };
+    });
+    return next();
+  } catch (err) {
+    next(err);
+  }
+};
 
 export { requirePermissions, requireRoles, auth };
