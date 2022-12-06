@@ -21,17 +21,18 @@ const verifyCallback =
     }
     req.user = user;
 
-    if (options?.requiredRights?.length) {
-      const userRights = AllRoles[user.role as Role] || [];
-      const hasRequiredRights = options.requiredRights.every(
-        (requiredRight: RoleRights) => userRights.includes(requiredRight),
-      );
+    if (options?.requiredRoles?.length) {
+      const hasRequiredRights = options.requiredRoles.includes(user.role);
       if (!hasRequiredRights && req.params.userId !== user.id) {
         return reject(new ForbiddenError('forbidden'));
       }
     }
-    if (options?.requiredRoles?.length) {
-      const hasRequiredRights = options.requiredRoles.includes(user.role);
+
+    if (options?.requiredRights?.length) {
+      const userRights = AllRoles[user.role] || [];
+      const hasRequiredRights = options.requiredRights.every(
+        (requiredRight: RoleRights) => userRights.includes(requiredRight),
+      );
       if (!hasRequiredRights && req.params.userId !== user.id) {
         return reject(new ForbiddenError('forbidden'));
       }
