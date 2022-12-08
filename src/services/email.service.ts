@@ -1,6 +1,8 @@
 import env from '@configs/env';
 import config from '@configs/env';
 import { logger } from '@configs/logger';
+import { getEmailForgotPassword } from '@src/email-templates/forgot-password';
+import { getEmailVerifyAccount } from '@src/email-templates/verify-email';
 import nodemailer from 'nodemailer';
 
 export const transport = nodemailer.createTransport(config.email.smtp);
@@ -15,27 +17,36 @@ if (config.env !== 'test') {
     );
 }
 
-export const sendEmail = async (to: string, subject: string, text: string) => {
-  const msg = { from: config.email.from, to, subject, text };
-  await transport.sendMail(msg);
+export const sendEmail = async (
+  to: string,
+  subject: string,
+  content: string,
+) => {
+  try {
+    logger.info(`Send mail to ${to}`);
+    const mailOptions = {
+      from: `ThBE <${env.email.from}>`,
+      to: to,
+      subject: subject,
+      html: content,
+    };
+    await transport.sendMail(mailOptions);
+    logger.info(`Send mail to ${to} success`);
+  } catch (error) {
+    logger.error(`Send mail to ${to} failed ${error}`);
+  }
 };
 
 export const sendResetPasswordEmail = async (to: string, token: string) => {
-  const subject = 'Reset password';
-  // replace this url with the link to the reset password page of your front-end app
+  const subject = 'Yêu cầu đặt lại mật khẩu';
   const resetPasswordUrl = `${env.web_app_url}/auth/reset-password?token=${token}`;
-  const text = `Dear user,
-To reset your password, click on this link: ${resetPasswordUrl}
-If you did not request any password resets, then ignore this email.`;
+  const text = getEmailForgotPassword(resetPasswordUrl);
   await sendEmail(to, subject, text);
 };
 
 export const sendVerificationEmail = async (to: string, token: string) => {
-  const subject = 'Email Verification';
-  // replace this url with the link to the email verification page of your front-end app
+  const subject = 'Xác thực tài khoản';
   const verificationEmailUrl = `${env.web_app_url}/auth/verify-email?token=${token}`;
-  const text = `Dear user,
-To verify your email, click on this link: ${verificationEmailUrl}
-If you did not create an account, then ignore this email.`;
+  const text = getEmailVerifyAccount(verificationEmailUrl);
   await sendEmail(to, subject, text);
 };
