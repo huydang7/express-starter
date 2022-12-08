@@ -17,7 +17,6 @@ export const getUsers = validate({
   query: Joi.object().keys({
     name: Joi.string(),
     role: Joi.string(),
-    order: Joi.string(),
     size: Joi.number().integer(),
     page: Joi.number().integer(),
   }),
