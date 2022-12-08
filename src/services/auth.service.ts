@@ -64,7 +64,7 @@ export const resetPassword = async (
     );
     const user = await UserService.getUserById(token.userId);
     if (!user) {
-      throw new Error();
+      throw new Error('user not found');
     }
     await UserService.updateUserById(user.id, { password: newPassword });
     await Token.destroy({
@@ -86,7 +86,7 @@ export const verifyEmail = async (verifyEmailToken: string) => {
     );
     const user = await UserService.getUserById(token.userId);
     if (!user) {
-      throw new Error();
+      throw new Error('user not found');
     }
     await Token.destroy({
       where: {
