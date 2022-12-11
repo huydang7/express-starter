@@ -1,7 +1,7 @@
 import { TimestampDefinition } from './base';
-import { ISample, SampleType } from '@interfaces/sample';
-import { enumToArray } from '@shared/utils';
+import { ISample, SampleType } from 'interfaces/sample';
 import sequelize, { Model, Optional } from 'sequelize';
+import { enumToArray } from 'shared/utils';
 
 type CreationAttributes = Optional<ISample, 'id'>;
 

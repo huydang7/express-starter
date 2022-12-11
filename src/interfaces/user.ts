@@ -1,4 +1,4 @@
-import { Role } from '@configs/roles';
+import { Role } from 'configs/roles';
 
 export interface IUser {
   id: string;

@@ -12,9 +12,9 @@
     "strict": true,
     "skipLibCheck": true,
     "outDir": "dist",
-    "typeRoots": ["src/types"]
+    "typeRoots": ["src/types"],
+    "baseUrl": "src"
   },
   "include": ["src", "**/*.ts"],
-  "exclude": ["node_modules"],
-  "extends": "./tsconfig.paths.json"
+  "exclude": ["node_modules"]
 }

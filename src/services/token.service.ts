@@ -1,10 +1,10 @@
 import { UserService } from '.';
-import env from '@configs/env';
-import { NotFoundError } from '@exceptions';
-import { TokenType } from '@interfaces/token';
-import { IUser } from '@interfaces/user';
-import { Token } from '@models/token.model';
+import env from 'configs/env';
+import { NotFoundError } from 'exceptions';
+import { TokenType } from 'interfaces/token';
+import { IUser } from 'interfaces/user';
 import jwt from 'jsonwebtoken';
+import { Token } from 'models/token.model';
 import moment, { Moment } from 'moment';
 
 export const generateToken = (

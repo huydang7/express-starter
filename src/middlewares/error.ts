@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import config from '@configs/env';
-import { logger } from '@configs/logger';
+import config from 'configs/env';
+import { logger } from 'configs/logger';
 import { Response } from 'express';
 
 const errorHandler = (err: any, _req: any, res: Response, _next: any) => {

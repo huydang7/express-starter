@@ -1,15 +1,10 @@
 import * as AuthValidator from './validator';
-import { BaseError } from '@exceptions/base-error';
-import { auth } from '@middlewares/auth';
-import {
-  AuthService,
-  EmailService,
-  TokenService,
-  UserService,
-} from '@services';
-import { catchAsync } from '@shared/utils';
+import { BaseError } from 'exceptions/base-error';
 import express from 'express';
 import httpStatus from 'http-status';
+import { auth } from 'middlewares/auth';
+import { AuthService, EmailService, TokenService, UserService } from 'services';
+import { catchAsync } from 'shared/utils';
 
 const router = express.Router();
 

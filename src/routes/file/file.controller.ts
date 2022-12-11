@@ -1,6 +1,6 @@
 import { getFileUploadMiddleware } from './upload-middleware';
-import config from '@configs/env';
-import { BadRequest } from '@exceptions';
+import config from 'configs/env';
+import { BadRequest } from 'exceptions';
 import express from 'express';
 
 const router = express.Router();

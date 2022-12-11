@@ -1,6 +1,6 @@
-import { BadRequest } from '@exceptions';
-import pick from '@shared/utils/pick';
+import { BadRequest } from 'exceptions';
 import Joi from 'joi';
+import pick from 'shared/utils/pick';
 
 const validate = (schema: any) => (req: any, res: any, next: any) => {
   const validSchema = pick(schema, ['params', 'query', 'body']);

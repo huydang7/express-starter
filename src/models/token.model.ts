@@ -1,7 +1,7 @@
 import { TimestampDefinition } from './base';
-import { IToken, TokenType } from '@interfaces/token';
-import { enumToArray } from '@shared/utils';
+import { IToken, TokenType } from 'interfaces/token';
 import sequelize, { Model, Optional } from 'sequelize';
+import { enumToArray } from 'shared/utils';
 
 type CreationAttributes = Optional<IToken, 'id'>;
 export class Token extends Model<IToken, CreationAttributes> implements IToken {

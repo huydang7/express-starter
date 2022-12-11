@@ -1,5 +1,5 @@
 import config from './env';
-import { TokenType } from '@interfaces/token';
+import { TokenType } from 'interfaces/token';
 import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt';
 
 const jwtOptions = {

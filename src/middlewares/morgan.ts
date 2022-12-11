@@ -1,4 +1,4 @@
-import { logger } from '@configs/logger';
+import { logger } from 'configs/logger';
 import morgan from 'morgan';
 
 const responseFormat = (tokens: any, req: any, res: any) => {

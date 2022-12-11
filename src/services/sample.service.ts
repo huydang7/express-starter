@@ -1,9 +1,9 @@
 import { IPagination } from './shared/common';
 import { getPageSize } from './shared/helper';
-import { BaseError } from '@exceptions/base-error';
-import { ISample } from '@interfaces/sample';
-import { Sample } from '@models/sample.model';
+import { BaseError } from 'exceptions/base-error';
 import httpStatus from 'http-status';
+import { ISample } from 'interfaces/sample';
+import { Sample } from 'models/sample.model';
 
 export const createSample = async (sampleBody: Omit<ISample, 'id'>) => {
   return await Sample.create(sampleBody);

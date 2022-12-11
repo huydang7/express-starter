@@ -1,8 +1,8 @@
 import { IPagination } from './shared/common';
 import { getPageSize } from './shared/helper';
-import { BadRequest, NotFoundError } from '@exceptions';
-import { User } from '@models/user.model';
-import { IUser } from '@src/interfaces/user';
+import { BadRequest, NotFoundError } from 'exceptions';
+import { IUser } from 'interfaces/user';
+import { User } from 'models/user.model';
 
 export const createUser = async (userBody: Omit<IUser, 'id'>) => {
   if (await User.isEmailTaken(userBody.email)) {

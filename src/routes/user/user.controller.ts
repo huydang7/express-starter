@@ -1,10 +1,10 @@
 import * as Validator from './validator';
-import { Role } from '@configs/roles';
-import { NotFoundError } from '@exceptions';
-import { auth, requireRoles } from '@middlewares/auth';
-import { UserService } from '@services';
-import { catchAsync, pick } from '@shared/utils';
+import { Role } from 'configs/roles';
+import { NotFoundError } from 'exceptions';
 import express from 'express';
+import { auth, requireRoles } from 'middlewares/auth';
+import { UserService } from 'services';
+import { catchAsync, pick } from 'shared/utils';
 
 const router = express.Router();
 

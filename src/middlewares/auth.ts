@@ -1,7 +1,7 @@
-import { AllRoles, Role, RoleRights } from '@configs/roles';
-import { AuthError, ForbiddenError } from '@exceptions';
-import { IUser } from '@src/interfaces/user';
+import { AllRoles, Role, RoleRights } from 'configs/roles';
+import { AuthError, ForbiddenError } from 'exceptions';
 import { NextFunction, Request, Response } from 'express';
+import { IUser } from 'interfaces/user';
 import passport from 'passport';
 
 const verifyCallback =

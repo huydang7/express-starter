@@ -1,6 +1,6 @@
-import config from '@configs/env';
-import { dbLogger, logger } from '@configs/logger';
-import { initModels, initRelations } from '@models/index';
+import config from 'configs/env';
+import { dbLogger, logger } from 'configs/logger';
+import { initModels, initRelations } from 'models/index';
 import { Sequelize } from 'sequelize';
 
 export let connection: Sequelize;

@@ -1,11 +1,11 @@
 import * as Validator from './validator';
-import { Role } from '@configs/roles';
-import { BaseError } from '@exceptions/base-error';
-import { requireRoles } from '@middlewares/auth';
-import { SampleService } from '@services';
-import { catchAsync, pick } from '@shared/utils';
+import { Role } from 'configs/roles';
+import { BaseError } from 'exceptions/base-error';
 import express from 'express';
 import httpStatus from 'http-status';
+import { requireRoles } from 'middlewares/auth';
+import { SampleService } from 'services';
+import { catchAsync, pick } from 'shared/utils';
 
 const router = express.Router();
 

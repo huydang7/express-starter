@@ -1,8 +1,8 @@
-import env from '@configs/env';
-import config from '@configs/env';
-import { logger } from '@configs/logger';
-import { getEmailForgotPassword } from '@src/email-templates/forgot-password';
-import { getEmailVerifyAccount } from '@src/email-templates/verify-email';
+import env from 'configs/env';
+import config from 'configs/env';
+import { logger } from 'configs/logger';
+import { getEmailForgotPassword } from 'email-templates/forgot-password';
+import { getEmailVerifyAccount } from 'email-templates/verify-email';
 import nodemailer from 'nodemailer';
 
 export const transport = nodemailer.createTransport(config.email.smtp);

@@ -1,8 +1,8 @@
 import { TokenService, UserService } from '.';
-import { AuthError, NotFoundError } from '@exceptions';
-import { TokenType } from '@interfaces/token';
-import { IUser } from '@interfaces/user';
-import { Token } from '@models/token.model';
+import { AuthError, NotFoundError } from 'exceptions';
+import { TokenType } from 'interfaces/token';
+import { IUser } from 'interfaces/user';
+import { Token } from 'models/token.model';
 
 export const register = async (user: IUser) => {
   const createdUser = await UserService.createUser(user);

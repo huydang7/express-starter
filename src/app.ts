@@ -1,15 +1,15 @@
-import * as morgan from '@middlewares/morgan';
-import jwtStrategy from '@configs/jwt';
-import { NotFoundError } from '@exceptions/not-found';
-import { errorHandler } from '@middlewares/error';
-import { responseEnhancer } from '@middlewares/formatter';
-import routes from '@routes';
+import * as morgan from 'middlewares/morgan';
 import compression from 'compression';
+import jwtStrategy from 'configs/jwt';
 import cors from 'cors';
+import { NotFoundError } from 'exceptions/not-found';
 import express from 'express';
 import http from 'http';
+import { errorHandler } from 'middlewares/error';
+import { responseEnhancer } from 'middlewares/formatter';
 import passport from 'passport';
 import path from 'path';
+import routes from 'routes';
 
 const app = express();
 
