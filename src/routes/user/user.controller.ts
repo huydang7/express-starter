@@ -53,7 +53,7 @@ router
   .patch(auth(), Validator.updateProfile, updateProfile);
 
 router
-  .route('/:userId')
+  .route('/:id')
   .get(requireRoles([Role.ADMIN]), Validator.getUser, getUser)
   .patch(requireRoles([Role.ADMIN]), Validator.updateUser, updateUser)
   .delete(requireRoles([Role.ADMIN]), Validator.getUser, deleteUser);

@@ -14,23 +14,25 @@ export const createUser = validate({
 });
 
 export const getUsers = validate({
-  query: Joi.object().keys({
-    name: Joi.string(),
-    role: Joi.string(),
-    size: Joi.number().integer(),
-    page: Joi.number().integer(),
-  }),
+  query: Joi.object()
+    .keys({
+      name: Joi.string(),
+      role: Joi.string(),
+      size: Joi.number().integer(),
+      page: Joi.number().integer(),
+    })
+    .options({ allowUnknown: true }),
 });
 
 export const getUser = validate({
   params: Joi.object().keys({
-    userId: Joi.string(),
+    id: Joi.string(),
   }),
 });
 
 export const updateUser = validate({
   params: Joi.object().keys({
-    userId: Joi.required(),
+    id: Joi.required(),
   }),
   body: Joi.object()
     .keys({
@@ -44,7 +46,7 @@ export const updateUser = validate({
 
 export const deleteUser = validate({
   params: Joi.object().keys({
-    userId: Joi.string(),
+    id: Joi.string(),
   }),
 });
 
