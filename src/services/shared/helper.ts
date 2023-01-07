@@ -1,17 +1,17 @@
 import { IOrder, IPagination, Sort } from './common';
-import { defaultPageSize } from 'shared/constants';
+import { DefaultPageSize } from 'shared/constants';
 
-type OrderKey = 'byCreatedAt' | 'byOrder';
+type OrderKey = 'ByCreatedAt' | 'ByOrder';
 
-export const defaultOrder: { [key in OrderKey]: IOrder } = {
-  byCreatedAt: [['createdAt', Sort.ASC]],
-  byOrder: [['order', Sort.ASC]],
+export const DefaultOrder: { [key in OrderKey]: IOrder } = {
+  ByCreatedAt: [['createdAt', Sort.ASC]],
+  ByOrder: [['order', Sort.ASC]],
 };
 
-export const EXCLUDE_USER_PROPS = ['password'];
+export const ExcludeUserProps = ['password'];
 
 export const getPageSize = (options: IPagination) => {
-  const page = options?.page || defaultPageSize.page;
-  const size = options?.size || defaultPageSize.size;
+  const page = options?.page || DefaultPageSize.page;
+  const size = options?.size || DefaultPageSize.size;
   return { offset: (page - 1) * size, limit: size };
 };

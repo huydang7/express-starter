@@ -1,4 +1,4 @@
-export const defaultPageSize = {
+export const DefaultPageSize = {
   page: 1,
   size: 50,
 };
