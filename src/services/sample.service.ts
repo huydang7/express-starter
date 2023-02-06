@@ -1,5 +1,5 @@
 import { IPagination } from './shared/common';
-import { getPageSize } from './shared/helper';
+import { DefaultOrder, getPageSize } from './shared/helper';
 import { BaseError } from 'exceptions/base-error';
 import httpStatus from 'http-status';
 import { ISample } from 'interfaces/sample';
@@ -20,6 +20,7 @@ export const querySamples = async (
     },
     limit,
     offset,
+    order: options?.order || DefaultOrder.ByCreatedAt,
   });
   return samples;
 };

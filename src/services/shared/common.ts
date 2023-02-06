@@ -5,6 +5,7 @@ export enum Sort {
 export interface IPagination {
   page?: number;
   size?: number;
+  order?: IOrder;
 }
 
 export type IOrder = [[key: string, sorter: Sort]];

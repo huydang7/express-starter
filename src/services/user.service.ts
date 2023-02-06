@@ -1,5 +1,5 @@
 import { IPagination } from './shared/common';
-import { getPageSize } from './shared/helper';
+import { DefaultOrder, getPageSize } from './shared/helper';
 import { BadRequest, NotFoundError } from 'exceptions';
 import { IUser } from 'interfaces/user';
 import { User } from 'models/user.model';
@@ -21,6 +21,7 @@ export const queryUsers = async (
       ...filter,
     },
     ...getPageSize(options),
+    order: options?.order || DefaultOrder.ByCreatedAt,
   });
   return users;
 };
