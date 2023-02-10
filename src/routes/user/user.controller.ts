@@ -23,7 +23,7 @@ const getUsers = catchAsync(async (req, res) => {
 const getUser = catchAsync(async (req, res) => {
   const user = await UserService.getUserById(req.params.userId);
   if (!user) {
-    throw new NotFoundError('user not found');
+    throw new NotFoundError('User not found');
   }
   res.formatter(user);
 });

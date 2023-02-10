@@ -16,7 +16,7 @@ export const loginUserWithEmailAndPassword = async (
 ) => {
   const user = await UserService.getUserByEmail(email);
   if (!user || !user.isPasswordMatch(password)) {
-    throw new AuthError('incorrect email or password');
+    throw new AuthError('Incorrect email or password');
   }
   const tokens = await TokenService.generateAuthTokens(user);
 
@@ -31,7 +31,7 @@ export const logout = async (refreshToken: string) => {
     },
   });
   if (!token) {
-    throw new NotFoundError('not found');
+    throw new NotFoundError('Not found');
   }
   await token.destroy();
 };
@@ -44,12 +44,12 @@ export const refreshAuth = async (refreshToken: string) => {
     );
     const user = await UserService.getUserById(token.userId);
     if (!user) {
-      throw new Error('user not found');
+      throw new Error('User not found');
     }
     await token.destroy();
     return TokenService.generateAuthTokens(user);
   } catch (error) {
-    throw new AuthError('please authenticate');
+    throw new AuthError('Please authenticate');
   }
 };
 
@@ -64,7 +64,7 @@ export const resetPassword = async (
     );
     const user = await UserService.getUserById(token.userId);
     if (!user) {
-      throw new NotFoundError('user not found');
+      throw new NotFoundError('User not found');
     }
     await UserService.updateUserById(user.id, { password: newPassword });
     await Token.destroy({
@@ -74,7 +74,7 @@ export const resetPassword = async (
       },
     });
   } catch (error) {
-    throw new AuthError('password reset failed');
+    throw new AuthError('Password reset failed');
   }
 };
 
@@ -86,7 +86,7 @@ export const verifyEmail = async (verifyEmailToken: string) => {
     );
     const user = await UserService.getUserById(token.userId);
     if (!user) {
-      throw new NotFoundError('user not found');
+      throw new NotFoundError('User not found');
     }
     await Token.destroy({
       where: {
@@ -96,6 +96,6 @@ export const verifyEmail = async (verifyEmailToken: string) => {
     });
     await UserService.updateUserById(user.id, { isEmailVerified: true });
   } catch (error) {
-    throw new AuthError('email verification failed');
+    throw new AuthError('Email verification failed');
   }
 };

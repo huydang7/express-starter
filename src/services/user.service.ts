@@ -6,7 +6,7 @@ import { User } from 'models/user.model';
 
 export const createUser = async (userBody: Omit<IUser, 'id'>) => {
   if (await User.isEmailTaken(userBody.email)) {
-    throw new BadRequest('email already taken', 100);
+    throw new BadRequest('Email already taken', 100);
   }
   const user = await User.create(userBody);
   return user;
@@ -40,10 +40,10 @@ export const updateUserById = async (
 ) => {
   const user = await getUserById(userId);
   if (!user) {
-    throw new NotFoundError('user not found');
+    throw new NotFoundError('User not found');
   }
   if (updateBody.email && (await User.isEmailTaken(updateBody.email))) {
-    throw new BadRequest('email already taken', 100);
+    throw new BadRequest('Email already taken', 100);
   }
 
   const res = await User.update(updateBody, { where: { id: userId } });
@@ -53,7 +53,7 @@ export const updateUserById = async (
 export const deleteUserById = async (userId: string) => {
   const user = await getUserById(userId);
   if (!user) {
-    throw new NotFoundError('user not found');
+    throw new NotFoundError('User not found');
   }
   await User.destroy({ where: { id: userId } });
   return user;

@@ -52,7 +52,7 @@ const resetPassword = catchAsync(async (req, res) => {
 
 const sendVerificationEmail = catchAsync(async (req, res) => {
   if (!req.user) {
-    throw new BaseError(httpStatus.BAD_REQUEST, 'user not found');
+    throw new BaseError(httpStatus.BAD_REQUEST, 'User not found');
   }
   const verifyEmailToken = await TokenService.generateVerifyEmailToken(
     req.user,

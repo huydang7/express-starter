@@ -46,7 +46,7 @@ export const verifyToken = async (token: string, type: TokenType) => {
     },
   });
   if (!result) {
-    throw new Error('token not found');
+    throw new Error('Token not found');
   }
   return result;
 };
@@ -89,7 +89,7 @@ export const generateAuthTokens = async (user: IUser) => {
 export const generateResetPasswordToken = async (email: string) => {
   const user = await UserService.getUserByEmail(email);
   if (!user) {
-    throw new NotFoundError('no users found with this email');
+    throw new NotFoundError('No users found with this email');
   }
   const expires = moment().add(
     env.jwt.resetPasswordExpirationMinutes,

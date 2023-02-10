@@ -5,7 +5,7 @@ import { Response } from 'express';
 
 const errorHandler = (err: any, _req: any, res: Response, _next: any) => {
   const { httpCode, message, errorCode, errorDetails } = err;
-  logger.error(message || 'unknown error');
+  logger.error(message || 'Unknown error');
   logger.error(err.stack);
   res
     .status(httpCode)

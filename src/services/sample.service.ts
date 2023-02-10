@@ -35,7 +35,7 @@ export const updateSampleById = async (
 ) => {
   const sample = await getSampleById(sampleId);
   if (!sample) {
-    throw new BaseError(httpStatus.NOT_FOUND, 'sample not found');
+    throw new BaseError(httpStatus.NOT_FOUND, 'Sample not found');
   }
 
   const res = await Sample.update(updateBody, { where: { id: sampleId } });
@@ -45,7 +45,7 @@ export const updateSampleById = async (
 export const deleteSampleById = async (sampleId: string) => {
   const sample = await getSampleById(sampleId);
   if (!sample) {
-    throw new BaseError(httpStatus.NOT_FOUND, 'sample not found');
+    throw new BaseError(httpStatus.NOT_FOUND, 'Sample not found');
   }
   await Sample.destroy({ where: { id: sampleId } });
   return sample;
