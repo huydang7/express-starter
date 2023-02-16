@@ -21,7 +21,7 @@ export const queryUsers = async (
       ...filter,
     },
     ...getPageSize(options),
-    order: options?.order || DefaultOrder.ByCreatedAt,
+    order: options?.order || DefaultOrder.byCreatedAt,
   });
   return users;
 };

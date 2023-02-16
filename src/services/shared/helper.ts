@@ -1,11 +1,11 @@
 import { IOrder, IPagination, Sort } from './common';
 import { DefaultPageSize } from 'shared/constants';
 
-type OrderKey = 'ByCreatedAt' | 'ByOrder';
+type OrderKey = 'byCreatedAt' | 'byOrder';
 
 export const DefaultOrder: { [key in OrderKey]: IOrder } = {
-  ByCreatedAt: [['createdAt', Sort.ASC]],
-  ByOrder: [['order', Sort.ASC]],
+  byCreatedAt: [['createdAt', Sort.ASC]],
+  byOrder: [['order', Sort.ASC]],
 };
 
 export const ExcludeUserProps = ['password'];

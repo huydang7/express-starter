@@ -20,7 +20,7 @@ export const querySamples = async (
     },
     limit,
     offset,
-    order: options?.order || DefaultOrder.ByCreatedAt,
+    order: options?.order || DefaultOrder.byCreatedAt,
   });
   return samples;
 };
