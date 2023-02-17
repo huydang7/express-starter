@@ -1,4 +1,4 @@
-import config from './env';
+import config from '.';
 import { TokenType } from 'interfaces/token';
 import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt';
 

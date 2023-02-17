@@ -1,5 +1,5 @@
 import { UserService } from '.';
-import env from 'configs/env';
+import config from 'config';
 import { NotFoundError } from 'exceptions';
 import { TokenType } from 'interfaces/token';
 import { IUser } from 'interfaces/user';
@@ -11,7 +11,7 @@ export const generateToken = (
   data: any,
   expires: Moment,
   type: TokenType,
-  secret = env.jwt.secret,
+  secret = config.jwt.secret,
 ) => {
   const payload = {
     sub: data,
@@ -37,7 +37,7 @@ export const saveToken = async (
 };
 
 export const verifyToken = async (token: string, type: TokenType) => {
-  const payload: any = jwt.verify(token, env.jwt.secret);
+  const payload: any = jwt.verify(token, config.jwt.secret);
   const result = await Token.findOne({
     where: {
       token,
@@ -53,13 +53,13 @@ export const verifyToken = async (token: string, type: TokenType) => {
 
 export const generateAuthTokens = async (user: IUser) => {
   const accessTokenExpires = moment().add(
-    env.jwt.accessExpirationMinutes,
+    config.jwt.accessExpirationMinutes,
     'minutes',
   );
   const accessToken = generateToken(user, accessTokenExpires, TokenType.ACCESS);
 
   const refreshTokenExpires = moment().add(
-    env.jwt.refreshExpirationDays,
+    config.jwt.refreshExpirationDays,
     'days',
   );
   const refreshToken = generateToken(
@@ -92,7 +92,7 @@ export const generateResetPasswordToken = async (email: string) => {
     throw new NotFoundError('No users found with this email');
   }
   const expires = moment().add(
-    env.jwt.resetPasswordExpirationMinutes,
+    config.jwt.resetPasswordExpirationMinutes,
     'minutes',
   );
   const resetPasswordToken = generateToken(
@@ -110,7 +110,10 @@ export const generateResetPasswordToken = async (email: string) => {
 };
 
 export const generateVerifyEmailToken = async (user: IUser) => {
-  const expires = moment().add(env.jwt.verifyEmailExpirationMinutes, 'minutes');
+  const expires = moment().add(
+    config.jwt.verifyEmailExpirationMinutes,
+    'minutes',
+  );
   const verifyEmailToken = generateToken(user, expires, TokenType.VERIFY_EMAIL);
   await saveToken(verifyEmailToken, user.id, expires, TokenType.VERIFY_EMAIL);
   return verifyEmailToken;

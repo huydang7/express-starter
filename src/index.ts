@@ -1,6 +1,6 @@
 import app from './app';
-import config from 'configs/env';
-import { logger } from 'configs/logger';
+import config from 'config';
+import { logger } from 'config/logger';
 import { initDb } from 'database/connection';
 
 initDb();

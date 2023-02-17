@@ -1,6 +1,6 @@
 import { TimestampDefinition } from './base';
 import bcrypt from 'bcryptjs';
-import { Role } from 'configs/roles';
+import { Role } from 'config/roles';
 import { IUser } from 'interfaces/user';
 import sequelize, { Model, Optional } from 'sequelize';
 import { enumToArray } from 'shared/utils';

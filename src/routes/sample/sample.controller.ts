@@ -1,5 +1,5 @@
 import * as Validator from './validator';
-import { Role } from 'configs/roles';
+import { Role } from 'config/roles';
 import { BaseError } from 'exceptions/base-error';
 import express from 'express';
 import httpStatus from 'http-status';

@@ -54,8 +54,8 @@ if (error) {
 export default {
   env: envVars.NODE_ENV,
   port: envVars.PORT,
-  host_url: envVars.HOST_URL,
-  web_app_url: envVars.WEB_APP_URL,
+  hostUrl: envVars.HOST_URL,
+  webAppUrl: envVars.WEB_APP_URL,
   db: {
     host: envVars.DB_HOST,
     name: envVars.DB_NAME,

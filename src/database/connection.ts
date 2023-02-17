@@ -1,5 +1,5 @@
-import config from 'configs/env';
-import { dbLogger, logger } from 'configs/logger';
+import config from 'config';
+import { dbLogger, logger } from 'config/logger';
 import { initModels, initRelations } from 'models/index';
 import { Sequelize } from 'sequelize';
 
