@@ -13,8 +13,8 @@
     },
     "baseUrl": "src",
     "paths": {
-      "configs": ["configs"],
-      "configs/*": ["configs/*"],
+      "config": ["config"],
+      "config/*": ["config/*"],
       "routes": ["routes"],
       "routes/*": ["routes/*"],
       "database": ["database"],

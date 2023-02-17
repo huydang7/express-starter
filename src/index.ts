@@ -1,9 +1,9 @@
 import app from './app';
-import configs from 'configs';
-import { logger } from 'configs/logger';
+import config from 'config';
+import { logger } from 'config/logger';
 import { initDb } from 'database/connection';
 
 initDb();
-app.listen(configs.port, () => {
-  logger.info(`Server running on port ${configs.port}`);
+app.listen(config.port, () => {
+  logger.info(`Server running on port ${config.port}`);
 });

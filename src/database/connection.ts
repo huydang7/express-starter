@@ -1,5 +1,5 @@
-import configs from 'configs';
-import { dbLogger, logger } from 'configs/logger';
+import config from 'config';
+import { dbLogger, logger } from 'config/logger';
 import { initModels, initRelations } from 'models/index';
 import { Sequelize } from 'sequelize';
 
@@ -16,11 +16,11 @@ export const initDb = async () => {
   try {
     logger.info('Initializing database connection...');
     connection = new Sequelize(
-      configs.db.name,
-      configs.db.username,
-      configs.db.password,
+      config.db.name,
+      config.db.username,
+      config.db.password,
       {
-        host: configs.db.host,
+        host: config.db.host,
         dialect: 'postgres',
         define: {
           paranoid: true,

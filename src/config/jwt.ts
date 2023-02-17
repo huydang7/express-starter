@@ -1,9 +1,9 @@
-import configs from '.';
+import config from '.';
 import { TokenType } from 'interfaces/token';
 import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt';
 
 const jwtOptions = {
-  secretOrKey: configs.jwt.secret,
+  secretOrKey: config.jwt.secret,
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 };
 

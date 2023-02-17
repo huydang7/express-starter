@@ -1,4 +1,4 @@
-import { AllRoles, Role, RoleRights } from 'configs/roles';
+import { AllRoles, Role, RoleRights } from 'config/roles';
 import { AuthError, ForbiddenError } from 'exceptions';
 import { NextFunction, Request, Response } from 'express';
 import { IUser } from 'interfaces/user';

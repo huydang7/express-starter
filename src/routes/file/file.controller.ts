@@ -1,5 +1,5 @@
 import { getFileUploadMiddleware } from './upload-middleware';
-import configs from 'configs';
+import config from 'config';
 import { BadRequest } from 'exceptions';
 import express from 'express';
 
@@ -18,7 +18,7 @@ router.post('/', async (req, res, next) => {
 
       return res.formatter({
         ...req.file,
-        url: `${configs.hostUrl}/${req.file.path}`,
+        url: `${config.hostUrl}/${req.file.path}`,
       });
     });
   } catch (err) {

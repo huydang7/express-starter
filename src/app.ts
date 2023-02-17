@@ -1,6 +1,6 @@
 import * as morgan from 'middlewares/morgan';
 import compression from 'compression';
-import jwtStrategy from 'configs/jwt';
+import jwtStrategy from 'config/jwt';
 import cors from 'cors';
 import { NotFoundError } from 'exceptions/not-found';
 import express from 'express';
