@@ -1,5 +1,5 @@
 import { UserService } from '.';
-import config from 'configs';
+import configs from 'configs';
 import { NotFoundError } from 'exceptions';
 import { TokenType } from 'interfaces/token';
 import { IUser } from 'interfaces/user';
@@ -11,7 +11,7 @@ export const generateToken = (
   data: any,
   expires: Moment,
   type: TokenType,
-  secret = config.jwt.secret,
+  secret = configs.jwt.secret,
 ) => {
   const payload = {
     sub: data,
@@ -37,7 +37,7 @@ export const saveToken = async (
 };
 
 export const verifyToken = async (token: string, type: TokenType) => {
-  const payload: any = jwt.verify(token, config.jwt.secret);
+  const payload: any = jwt.verify(token, configs.jwt.secret);
   const result = await Token.findOne({
     where: {
       token,
@@ -53,13 +53,13 @@ export const verifyToken = async (token: string, type: TokenType) => {
 
 export const generateAuthTokens = async (user: IUser) => {
   const accessTokenExpires = moment().add(
-    config.jwt.accessExpirationMinutes,
+    configs.jwt.accessExpirationMinutes,
     'minutes',
   );
   const accessToken = generateToken(user, accessTokenExpires, TokenType.ACCESS);
 
   const refreshTokenExpires = moment().add(
-    config.jwt.refreshExpirationDays,
+    configs.jwt.refreshExpirationDays,
     'days',
   );
   const refreshToken = generateToken(
@@ -92,7 +92,7 @@ export const generateResetPasswordToken = async (email: string) => {
     throw new NotFoundError('No users found with this email');
   }
   const expires = moment().add(
-    config.jwt.resetPasswordExpirationMinutes,
+    configs.jwt.resetPasswordExpirationMinutes,
     'minutes',
   );
   const resetPasswordToken = generateToken(
@@ -111,7 +111,7 @@ export const generateResetPasswordToken = async (email: string) => {
 
 export const generateVerifyEmailToken = async (user: IUser) => {
   const expires = moment().add(
-    config.jwt.verifyEmailExpirationMinutes,
+    configs.jwt.verifyEmailExpirationMinutes,
     'minutes',
   );
   const verifyEmailToken = generateToken(user, expires, TokenType.VERIFY_EMAIL);

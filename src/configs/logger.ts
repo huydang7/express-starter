@@ -1,4 +1,4 @@
-import config from '.';
+import configs from '.';
 import winston, { format } from 'winston';
 
 const enumerateErrorFormat = winston.format((info) => {
@@ -33,7 +33,7 @@ export const dbFormatter = format.combine(
 );
 
 const logger = winston.createLogger({
-  level: config.env === 'development' ? 'debug' : 'info',
+  level: configs.env === 'development' ? 'debug' : 'info',
   format: apiFormatter,
   transports: [
     new winston.transports.Console({
@@ -51,7 +51,7 @@ const logger = winston.createLogger({
 });
 
 const dbLogger = winston.createLogger({
-  level: config.env === 'development' ? 'debug' : 'info',
+  level: configs.env === 'development' ? 'debug' : 'info',
   format: dbFormatter,
   transports: [
     new winston.transports.Console({

@@ -1,11 +1,11 @@
-import config from 'configs';
+import configs from 'configs';
 import { logger } from 'configs/logger';
 import { getEmailForgotPassword } from 'email-templates/forgot-password';
 import { getEmailVerifyAccount } from 'email-templates/verify-email';
 import nodemailer from 'nodemailer';
 
-export const transport = nodemailer.createTransport(config.email.smtp);
-if (config.env !== 'test') {
+export const transport = nodemailer.createTransport(configs.email.smtp);
+if (configs.env !== 'test') {
   transport
     .verify()
     .then(() => logger.info('Connected to email server'))
@@ -24,7 +24,7 @@ export const sendEmail = async (
   try {
     logger.info(`Send mail to ${to}`);
     const mailOptions = {
-      from: `ThBE <${config.email.from}>`,
+      from: `ThBE <${configs.email.from}>`,
       to: to,
       subject: subject,
       html: content,
@@ -38,14 +38,14 @@ export const sendEmail = async (
 
 export const sendResetPasswordEmail = async (to: string, token: string) => {
   const subject = 'Yêu cầu đặt lại mật khẩu';
-  const resetPasswordUrl = `${config.webAppUrl}/auth/reset-password?token=${token}`;
+  const resetPasswordUrl = `${configs.webAppUrl}/auth/reset-password?token=${token}`;
   const text = getEmailForgotPassword(resetPasswordUrl);
   await sendEmail(to, subject, text);
 };
 
 export const sendVerificationEmail = async (to: string, token: string) => {
   const subject = 'Xác thực tài khoản';
-  const verificationEmailUrl = `${config.webAppUrl}/auth/verify-email?token=${token}`;
+  const verificationEmailUrl = `${configs.webAppUrl}/auth/verify-email?token=${token}`;
   const text = getEmailVerifyAccount(verificationEmailUrl);
   await sendEmail(to, subject, text);
 };
