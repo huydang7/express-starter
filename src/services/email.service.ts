@@ -5,7 +5,7 @@ import { getEmailVerifyAccount } from 'email-templates/verify-email';
 import nodemailer from 'nodemailer';
 
 export const transport = nodemailer.createTransport(config.email.smtp);
-if (configs.env !== 'test') {
+if (config.env !== 'test') {
   transport
     .verify()
     .then(() => logger.info('Connected to email server'))
