@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import config from 'configs/env';
+import config from 'configs';
 import { logger } from 'configs/logger';
 import { Response } from 'express';
 

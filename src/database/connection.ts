@@ -1,4 +1,4 @@
-import config from 'configs/env';
+import config from 'configs';
 import { dbLogger, logger } from 'configs/logger';
 import { initModels, initRelations } from 'models/index';
 import { Sequelize } from 'sequelize';
