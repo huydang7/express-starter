@@ -1,8 +1,8 @@
 import * as Validator from './validator';
-import { Role } from 'config/roles';
 import { BaseError } from 'exceptions/base-error';
 import express from 'express';
 import httpStatus from 'http-status';
+import { Role } from 'interfaces/user';
 import { requireRoles } from 'middlewares/auth';
 import { SampleService } from 'services';
 import { catchAsync, pick } from 'shared/utils';

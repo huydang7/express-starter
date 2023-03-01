@@ -1,6 +1,6 @@
-import { AllRoles, Role, RoleRights } from 'config/roles';
 import { AuthError, ForbiddenError } from 'exceptions';
 import { NextFunction, Request, Response } from 'express';
+import { AllRoles, Role, RoleRights } from 'interfaces/user';
 import { IUser } from 'interfaces/user';
 import passport from 'passport';
 
