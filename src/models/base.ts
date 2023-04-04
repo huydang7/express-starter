@@ -1,24 +1,24 @@
-import sequelize from 'sequelize';
+import sequelize, { DataTypes } from 'sequelize';
 
 export const TimestampDefinition = {
   createdAt: {
-    type: sequelize.DATE,
+    type: DataTypes.DATE,
     defaultValue: sequelize.fn('now'),
   },
   updatedAt: {
-    type: sequelize.DATE,
+    type: DataTypes.DATE,
     defaultValue: sequelize.fn('now'),
   },
   deletedAt: {
-    type: sequelize.DATE,
+    type: DataTypes.DATE,
   },
 };
 
 export const UserModifyingDefinition = {
   createdBy: {
-    type: sequelize.UUID,
+    type: DataTypes.UUID,
   },
   updatedBy: {
-    type: sequelize.UUID,
+    type: DataTypes.UUID,
   },
 };

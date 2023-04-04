@@ -19,7 +19,8 @@
     "lint": "npx eslint ./**/*.ts && echo 'Passed!'",
     "migration:dev": "dotenv -e ./.env sequelize-cli db:migrate",
     "migration:undo:dev": "dotenv -e ./.env sequelize-cli db:migrate:undo",
-    "cp-resources": "cp .env dist/ && cp -R public dist/"
+    "cp-resources": "cp .env dist/ && cp -R public dist/",
+    "new": "hygen query new"
   },
   "keywords": [],
   "author": "",
@@ -35,6 +36,7 @@
     "helmet": "^6.0.0",
     "http-errors": "^2.0.0",
     "http-status": "^1.5.3",
+    "hygen": "^6.2.11",
     "joi": "^17.6.0",
     "moment": "^2.29.4",
     "morgan": "^1.10.0",

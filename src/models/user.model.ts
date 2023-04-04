@@ -1,7 +1,7 @@
 import { TimestampDefinition } from './base';
 import bcrypt from 'bcryptjs';
 import { IUser, Role } from 'interfaces/user';
-import sequelize, { Model, Optional } from 'sequelize';
+import sequelize, { DataTypes, Model, Optional } from 'sequelize';
 import { enumToArray } from 'shared/utils';
 
 type CreationAttributes = Optional<IUser, 'id'>;
@@ -32,29 +32,29 @@ export const initModel = (connection: sequelize.Sequelize): void => {
   User.init(
     {
       id: {
-        type: sequelize.UUID,
+        type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
-        defaultValue: sequelize.UUIDV4,
+        defaultValue: sequelize.fn('uuid_generate_v4'),
       },
       name: {
-        type: sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       email: {
-        type: sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         unique: 'user_email',
       },
       password: {
-        type: sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         set: function (value: string) {
           this.setDataValue('password', bcrypt.hashSync(value, 10));
         },
       },
       role: {
-        type: sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         defaultValue: Role.USER,
         validate: {
@@ -62,7 +62,7 @@ export const initModel = (connection: sequelize.Sequelize): void => {
         },
       },
       isEmailVerified: {
-        type: sequelize.BOOLEAN,
+        type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false,
       },

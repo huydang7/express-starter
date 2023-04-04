@@ -1,6 +1,6 @@
 import { TimestampDefinition } from './base';
 import { IToken, TokenType } from 'interfaces/token';
-import sequelize, { Model, Optional } from 'sequelize';
+import sequelize, { DataTypes, Model, Optional } from 'sequelize';
 import { enumToArray } from 'shared/utils';
 
 type CreationAttributes = Optional<IToken, 'id'>;
@@ -16,27 +16,27 @@ export const initModel = (connection: sequelize.Sequelize): void => {
   Token.init(
     {
       id: {
-        type: sequelize.UUID,
+        type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
-        defaultValue: sequelize.UUIDV4,
+        defaultValue: sequelize.fn('uuid_generate_v4'),
       },
       token: {
-        type: sequelize.STRING(1000),
+        type: DataTypes.STRING(1000),
       },
       userId: {
-        type: sequelize.UUID,
+        type: DataTypes.UUID,
         allowNull: false,
       },
       type: {
-        type: sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
           isIn: [enumToArray(TokenType)],
         },
       },
       expires: {
-        type: sequelize.DATE,
+        type: DataTypes.DATE,
         allowNull: false,
       },
       ...TimestampDefinition,
