@@ -17,8 +17,8 @@
     "start": "node -r dotenv/config dist/index.js",
     "format": "npx prettier --config .prettierrc --write ./src/**/*.ts ./src/*.ts",
     "lint": "npx eslint ./**/*.ts && echo 'Passed!'",
-    "migration:dev": "dotenv -e ./.env sequelize-cli db:migrate",
-    "migration:undo:dev": "dotenv -e ./.env sequelize-cli db:migrate:undo",
+    "migrate": "dotenv -e ./.env sequelize-cli db:migrate",
+    "migrate:undo": "dotenv -e ./.env sequelize-cli db:migrate:undo",
     "cp-resources": "cp .env dist/ && cp -R public dist/",
     "new": "hygen query new"
   },
