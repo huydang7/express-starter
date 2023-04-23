@@ -6,7 +6,7 @@ import passport from 'passport';
 
 const verifyCallback =
   (
-    req: Request,
+    req: any,
     resolve: any,
     reject: any,
     options: {
@@ -16,25 +16,31 @@ const verifyCallback =
     } = {},
   ) =>
   async (err: any, user: IUser, info: any) => {
-    if (!options.optional && (err || info || !user)) {
-      return reject(new AuthError('please authenticate'));
+    const {
+      optional = false,
+      requiredRights = [],
+      requiredRoles = [],
+    } = options;
+
+    if (!optional && (err || info || !user)) {
+      return reject(new AuthError('Please authenticate'));
     }
     req.user = user;
 
-    if (options?.requiredRoles?.length) {
-      const hasRequiredRights = options.requiredRoles.includes(user.role);
+    if (requiredRoles.length) {
+      const hasRequiredRights = requiredRoles.includes(user.role);
       if (!hasRequiredRights && req.params.userId !== user.id) {
-        return reject(new ForbiddenError('forbidden'));
+        return reject(new ForbiddenError('Forbidden'));
       }
     }
 
-    if (options?.requiredRights?.length) {
+    if (requiredRights.length) {
       const userRights = AllRoles[user.role] || [];
-      const hasRequiredRights = options.requiredRights.every(
+      const hasRequiredRights = requiredRights.every(
         (requiredRight: RoleRights) => userRights.includes(requiredRight),
       );
       if (!hasRequiredRights && req.params.userId !== user.id) {
-        return reject(new ForbiddenError('forbidden'));
+        return reject(new ForbiddenError('Forbidden'));
       }
     }
 
