@@ -29,6 +29,7 @@ export const initDb = async () => {
       },
     );
     await connection.authenticate();
+    await connection.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
     initModels(connection);
     initRelations();
     await connection.sync({});
