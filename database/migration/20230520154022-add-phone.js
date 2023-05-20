@@ -1,12 +1,15 @@
+'use strict';
+
+/** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  up: async (queryInterface) => {
+  async up(queryInterface) {
     await queryInterface.sequelize.query(`
       ALTER TABLE "user"
       ADD COLUMN IF NOT EXISTS "phone" VARCHAR(255);
-
-  `);
+    `);
   },
-  down: async (queryInterface) => {
+
+  async down(queryInterface) {
     await queryInterface.sequelize.query(`
       ALTER TABLE "user"
       DROP COLUMN IF EXISTS "phone";
