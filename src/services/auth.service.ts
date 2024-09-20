@@ -1,8 +1,9 @@
+import { AuthError, NotFoundError } from '@/exceptions';
+import { TokenType } from '@/interfaces/token';
+import { IUser } from '@/interfaces/user';
+import { Token } from '@/models/token.model';
+
 import { TokenService, UserService } from '.';
-import { AuthError, NotFoundError } from 'exceptions';
-import { TokenType } from 'interfaces/token';
-import { IUser } from 'interfaces/user';
-import { Token } from 'models/token.model';
 
 export const register = async (user: IUser) => {
   const createdUser = await UserService.createUser(user);
@@ -10,10 +11,7 @@ export const register = async (user: IUser) => {
   return { user: createdUser, tokens };
 };
 
-export const loginUserWithEmailAndPassword = async (
-  email: string,
-  password: string,
-) => {
+export const loginUserWithEmailAndPassword = async (email: string, password: string) => {
   const user = await UserService.getUserByEmail(email);
   if (!user || !user.isPasswordMatch(password)) {
     throw new AuthError('Incorrect email or password');
@@ -38,10 +36,7 @@ export const logout = async (refreshToken: string) => {
 
 export const refreshAuth = async (refreshToken: string) => {
   try {
-    const token = await TokenService.verifyToken(
-      refreshToken,
-      TokenType.REFRESH,
-    );
+    const token = await TokenService.verifyToken(refreshToken, TokenType.REFRESH);
     const user = await UserService.getUserById(token.userId);
     if (!user) {
       throw new Error('User not found');
@@ -53,15 +48,9 @@ export const refreshAuth = async (refreshToken: string) => {
   }
 };
 
-export const resetPassword = async (
-  resetPasswordToken: string,
-  newPassword: string,
-) => {
+export const resetPassword = async (resetPasswordToken: string, newPassword: string) => {
   try {
-    const token = await TokenService.verifyToken(
-      resetPasswordToken,
-      TokenType.RESET_PASSWORD,
-    );
+    const token = await TokenService.verifyToken(resetPasswordToken, TokenType.RESET_PASSWORD);
     const user = await UserService.getUserById(token.userId);
     if (!user) {
       throw new NotFoundError('User not found');
@@ -80,10 +69,7 @@ export const resetPassword = async (
 
 export const verifyEmail = async (verifyEmailToken: string) => {
   try {
-    const token = await TokenService.verifyToken(
-      verifyEmailToken,
-      TokenType.VERIFY_EMAIL,
-    );
+    const token = await TokenService.verifyToken(verifyEmailToken, TokenType.VERIFY_EMAIL);
     const user = await UserService.getUserById(token.userId);
     if (!user) {
       throw new NotFoundError('User not found');

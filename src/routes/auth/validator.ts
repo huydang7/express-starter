@@ -1,6 +1,8 @@
-import { password } from '../validators';
 import Joi from 'joi';
-import validate from 'middlewares/validate';
+
+import validate from '@/middlewares/validate';
+
+import { password } from '../validators';
 
 export const validateRegister = validate({
   body: Joi.object().keys({

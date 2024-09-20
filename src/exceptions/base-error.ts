@@ -5,12 +5,7 @@ export class BaseError extends Error {
   errorCode?: number;
   errorDetails?: ErrorDetails;
 
-  constructor(
-    httpCode: number,
-    message: string,
-    errorCode?: number,
-    errorDetails?: ErrorDetails,
-  ) {
+  constructor(httpCode: number, message: string, errorCode?: number, errorDetails?: ErrorDetails) {
     super(message);
     this.httpCode = httpCode;
     this.errorCode = errorCode;

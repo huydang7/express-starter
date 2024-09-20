@@ -1,8 +1,9 @@
-import config from 'config';
-import { logger } from 'config/logger';
-import { getEmailForgotPassword } from 'email-templates/forgot-password';
-import { getEmailVerifyAccount } from 'email-templates/verify-email';
 import nodemailer from 'nodemailer';
+
+import config from '@/config';
+import { logger } from '@/config/logger';
+import { getEmailForgotPassword } from '@/email-templates/forgot-password';
+import { getEmailVerifyAccount } from '@/email-templates/verify-email';
 
 export const transport = nodemailer.createTransport(config.email.smtp);
 if (config.env !== 'test') {
@@ -11,16 +12,12 @@ if (config.env !== 'test') {
     .then(() => logger.info('Connected to email server'))
     .catch(() =>
       logger.warn(
-        'Unable to connect to email server. Make sure you have configured the SMTP options in .env',
-      ),
+        'Unable to connect to email server. Make sure you have configured the SMTP options in .env'
+      )
     );
 }
 
-export const sendEmail = async (
-  to: string,
-  subject: string,
-  content: string,
-) => {
+export const sendEmail = async (to: string, subject: string, content: string) => {
   try {
     logger.info(`Send mail to ${to}`);
     const mailOptions = {

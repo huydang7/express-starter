@@ -9,7 +9,7 @@ to: src/models/<%=h.changeCase.paramCase(name)%>.model.ts
 %>
 
 import { TimestampDefinition } from './base';
-import { I<%=pascalCaseName%> } from 'interfaces/<%=paramCaseName%>';
+import { I<%=pascalCaseName%> } from '@/interfaces/<%=paramCaseName%>';
 import sequelize, { Model, Optional, DataTypes } from 'sequelize';
 
 

@@ -1,10 +1,12 @@
-import * as Validator from './validator';
-import { NotFoundError } from 'exceptions';
 import express from 'express';
-import { Role } from 'interfaces/user';
-import { auth, requireRoles } from 'middlewares/auth';
-import { UserService } from 'services';
-import { catchAsync, pick } from 'shared/utils';
+
+import { NotFoundError } from '@/exceptions';
+import { Role } from '@/interfaces/user';
+import { auth, requireRoles } from '@/middlewares/auth';
+import { UserService } from '@/services';
+import { catchAsync, pick } from '@/shared/utils';
+
+import * as Validator from './validator';
 
 const router = express.Router();
 
@@ -34,10 +36,7 @@ const updateUser = catchAsync(async (req, res) => {
 });
 
 const updateProfile = catchAsync(async (req, res) => {
-  const user = await UserService.updateUserById(
-    req?.user?.id as string,
-    req.body,
-  );
+  const user = await UserService.updateUserById(req?.user?.id as string, req.body);
   res.formatter(user);
 });
 

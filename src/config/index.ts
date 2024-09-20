@@ -1,15 +1,14 @@
 import * as dotenv from 'dotenv';
-import 'dotenv/config';
 import Joi from 'joi';
 import path from 'path';
+
+import 'dotenv/config';
 
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const envVarsSchema = Joi.object()
   .keys({
-    NODE_ENV: Joi.string()
-      .valid('production', 'development', 'test')
-      .required(),
+    NODE_ENV: Joi.string().valid('production', 'development', 'test').required(),
     PORT: Joi.number().default(3000),
 
     DB_NAME: Joi.string().required(),
@@ -31,13 +30,11 @@ const envVarsSchema = Joi.object()
       .default(10)
       .description('minutes after which verify email token expires'),
 
-    SMTP_HOST: Joi.string().description('server that will send the emails'),
-    SMTP_PORT: Joi.number().description('port to connect to the email server'),
-    SMTP_USERNAME: Joi.string().description('username for email server'),
-    SMTP_PASSWORD: Joi.string().description('password for email server'),
-    EMAIL_FROM: Joi.string().description(
-      'the from field in the emails sent by the app',
-    ),
+    // SMTP_HOST: Joi.string().description('server that will send the emails'),
+    // SMTP_PORT: Joi.number().description('port to connect to the email server'),
+    // SMTP_USERNAME: Joi.string().description('username for email server'),
+    // SMTP_PASSWORD: Joi.string().description('password for email server'),
+    // EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
     HOST_URL: Joi.string().description('host url for the api'),
     WEB_APP_URL: Joi.string().description('web app url'),
   })
@@ -66,8 +63,7 @@ export default {
     secret: envVars.JWT_SECRET,
     accessExpirationMinutes: envVars.JWT_ACCESS_EXPIRATION_MINUTES,
     refreshExpirationDays: envVars.JWT_REFRESH_EXPIRATION_DAYS,
-    resetPasswordExpirationMinutes:
-      envVars.JWT_RESET_PASSWORD_EXPIRATION_MINUTES,
+    resetPasswordExpirationMinutes: envVars.JWT_RESET_PASSWORD_EXPIRATION_MINUTES,
     verifyEmailExpirationMinutes: envVars.JWT_VERIFY_EMAIL_EXPIRATION_MINUTES,
   },
   email: {

@@ -1,5 +1,6 @@
-import { BaseError } from './base-error';
 import httpStatus from 'http-status';
+
+import { BaseError } from './base-error';
 
 export type ErrorDetails = { [key: string]: any };
 

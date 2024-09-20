@@ -1,3 +1,14 @@
 {
+  "prettier.ignorePath": ".gitignore",
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.codeActionsOnSave": {
+    "source.addMissingImports": "always",
+    "source.fixAll.eslint": "always"
+  },
+  "[json][jsonc][yaml]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.formatOnSave": false,
   "typescript.tsdk": "node_modules/typescript/lib"
 }

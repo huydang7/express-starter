@@ -1,22 +1,60 @@
 module.exports = {
+  ignorePatterns: ['database'],
   parser: '@typescript-eslint/parser',
-  extends: ['google', 'plugin:prettier/recommended'],
-  parserOptions: {
-    ecmaVersion: 2018,
-    sourceType: 'module',
-  },
+  plugins: ['@typescript-eslint/eslint-plugin', 'simple-import-sort', 'unused-imports', 'prettier'],
+  extends: ['plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
+  root: true,
   env: {
     browser: true,
     es6: true,
   },
-  plugins: ['@typescript-eslint'],
   rules: {
-    'arrow-parens': 0,
-    'object-curly-spacing': 0,
-    'new-cap': 0,
-    'require-jsdoc': 0,
-    'no-invalid-this': 0,
-    'no-unused-vars': 0,
-    '@typescript-eslint/no-unused-vars': 'error',
+    'prettier/prettier': [
+      'error',
+      {
+        bracketSameLine: false,
+        singleQuote: true,
+        trailingComma: 'es5',
+        semi: true,
+        arrowParens: 'always',
+        printWidth: 100,
+      },
+    ],
+    '@typescript-eslint/interface-name-prefix': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+      },
+    ],
+    'simple-import-sort/imports': [
+      'error',
+      {
+        groups: [
+          ['^react', '^@?\\w'],
+          ['^(@|components)(/.*|$)'],
+          ['^\\u0000'],
+          ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
+          ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
+          ['^.+\\.?(css)$'],
+        ],
+      },
+    ],
+    'simple-import-sort/exports': 'error',
+    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+      },
+    ],
   },
 };

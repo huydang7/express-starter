@@ -1,7 +1,9 @@
-import { getFileUploadMiddleware } from './upload-middleware';
-import config from 'config';
-import { BadRequest } from 'exceptions';
 import express from 'express';
+
+import config from '@/config';
+import { BadRequest } from '@/exceptions';
+
+import { getFileUploadMiddleware } from './upload-middleware';
 
 const router = express.Router();
 const upload = getFileUploadMiddleware().single('file');
@@ -10,10 +12,7 @@ router.post('/', async (req, res, next) => {
   try {
     await upload(req, res, (err: any) => {
       if (err || !req.file) {
-        throw new BadRequest(
-          'Can not upload file, the file field may be missing.',
-          100,
-        );
+        throw new BadRequest('Can not upload file, the file field may be missing.', 100);
       }
 
       return res.formatter({

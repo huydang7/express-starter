@@ -1,5 +1,6 @@
-import config from '.';
 import winston, { format } from 'winston';
+
+import config from '.';
 
 const enumerateErrorFormat = winston.format((info) => {
   if (info instanceof Error) {
@@ -13,7 +14,7 @@ export const formatter = format.combine(
   format.simple(),
   winston.format.colorize(),
   format.printf((log) => `${log.timestamp} ${log.level}: ${log.message}`),
-  enumerateErrorFormat(),
+  enumerateErrorFormat()
 );
 
 export const apiFormatter = format.combine(
@@ -21,7 +22,7 @@ export const apiFormatter = format.combine(
   format.simple(),
   winston.format.colorize(),
   format.printf((log) => `${log.timestamp} [API] ${log.level}: ${log.message}`),
-  enumerateErrorFormat(),
+  enumerateErrorFormat()
 );
 
 export const dbFormatter = format.combine(
@@ -29,7 +30,7 @@ export const dbFormatter = format.combine(
   format.simple(),
   winston.format.colorize(),
   format.printf((log) => `${log.timestamp} [DB] ${log.level}: ${log.message}`),
-  enumerateErrorFormat(),
+  enumerateErrorFormat()
 );
 
 const logger = winston.createLogger({
@@ -68,4 +69,4 @@ const dbLogger = winston.createLogger({
   ],
 });
 
-export { logger, dbLogger };
+export { dbLogger, logger };

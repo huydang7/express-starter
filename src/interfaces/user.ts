@@ -16,7 +16,7 @@ const AllRoles: RoleRightsMap = {
   USER: [],
 };
 
-export { Role, RoleRights, AllRoles };
+export { AllRoles, Role, RoleRights };
 
 export interface IUser {
   id: string;
@@ -25,4 +25,11 @@ export interface IUser {
   password: string;
   role: Role;
   isEmailVerified: boolean;
+}
+
+export interface IJWTUser {
+  id: string;
+  email: string;
+  name: string;
+  role: Role;
 }

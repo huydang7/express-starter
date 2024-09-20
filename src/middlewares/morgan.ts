@@ -1,13 +1,12 @@
-import { logger } from 'config/logger';
 import morgan from 'morgan';
 
+import { logger } from '@/config/logger';
+
 const responseFormat = (tokens: any, req: any, res: any) => {
-  return `Got Request: ip(${tokens['remote-addr'](req)})<${
-    req?.user?.email ?? ''
-  }> ${req.method} ${req.path} params=${JSON.stringify(
-    req.params,
-  )} query=${JSON.stringify(req.query)} body=${JSON.stringify(
-    req.body,
+  return `Got Request: ip(${tokens['remote-addr'](req)})<${req?.user?.email ?? ''}> ${req.method} ${
+    req.path
+  } params=${JSON.stringify(req.params)} query=${JSON.stringify(req.query)} body=${JSON.stringify(
+    req.body
   )} ${tokens['response-time'](req, res)}ms`;
 };
 
@@ -21,4 +20,4 @@ const errorHandler = morgan(responseFormat, {
   stream: { write: (message) => logger.error(message.trim()) },
 });
 
-export { successHandler, errorHandler };
+export { errorHandler, successHandler };

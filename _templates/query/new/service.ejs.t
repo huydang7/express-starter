@@ -9,10 +9,10 @@ to: src/services/<%=h.changeCase.paramCase(name)%>.service.ts
 %>
 import { IPagination } from './shared/common';
 import { getPageSize } from './shared/helper';
-import { BaseError } from 'exceptions/base-error';
+import { BaseError } from '@/exceptions/base-error';
 import httpStatus from 'http-status';
-import { I<%=pascalCaseName%> } from 'interfaces/<%=paramCaseName%>';
-import { <%=pascalCaseName%> } from 'models/<%=paramCaseName%>.model';
+import { I<%=pascalCaseName%> } from '@/interfaces/<%=paramCaseName%>';
+import { <%=pascalCaseName%> } from '@/models/<%=paramCaseName%>.model';
 
 export const create<%=pascalCaseName%> = async (<%=camelCaseName%>Body: Omit<I<%=pascalCaseName%>, 'id'>) => {
   return await <%=pascalCaseName%>.create(<%=camelCaseName%>Body);

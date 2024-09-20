@@ -1,7 +1,8 @@
+import express from 'express';
+
 import authController from './auth/auth.controller';
 import fileController from './file/file.controller';
 import userController from './user/user.controller';
-import express from 'express';
 
 const router = express.Router();
 

@@ -8,7 +8,7 @@ to: src/routes/<%=h.changeCase.paramCase(name)%>/validator.ts
 %>
 
 import Joi from 'joi';
-import validate from 'middlewares/validate';
+import validate from '@/middlewares/validate';
 
 export const create<%=pascalCaseName%> = validate({
   body: Joi.object().keys({}).options({ allowUnknown: true }),

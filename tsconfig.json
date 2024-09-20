@@ -13,8 +13,12 @@
     "skipLibCheck": true,
     "outDir": "dist",
     "typeRoots": ["src/types"],
-    "baseUrl": "src"
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src", "**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "files": ["src/types/express/index.d.ts"]
 }

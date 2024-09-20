@@ -1,8 +1,9 @@
+import { BadRequest, NotFoundError } from '@/exceptions';
+import { IUser } from '@/interfaces/user';
+import { User } from '@/models/user.model';
+
 import { IPagination } from './shared/common';
 import { DefaultOrder, getPageSize } from './shared/helper';
-import { BadRequest, NotFoundError } from 'exceptions';
-import { IUser } from 'interfaces/user';
-import { User } from 'models/user.model';
 
 export const createUser = async (userBody: Omit<IUser, 'id'>) => {
   if (await User.isEmailTaken(userBody.email)) {
@@ -12,10 +13,7 @@ export const createUser = async (userBody: Omit<IUser, 'id'>) => {
   return user;
 };
 
-export const queryUsers = async (
-  filter: Partial<IUser>,
-  options: IPagination,
-) => {
+export const queryUsers = async (filter: Partial<IUser>, options: IPagination) => {
   const users = await User.findAndCountAll({
     where: {
       ...filter,
@@ -34,10 +32,7 @@ export const getUserByEmail = async (email: string) => {
   return User.findOne({ where: { email } });
 };
 
-export const updateUserById = async (
-  userId: string,
-  updateBody: Partial<IUser>,
-) => {
+export const updateUserById = async (userId: string, updateBody: Partial<IUser>) => {
   const user = await getUserById(userId);
   if (!user) {
     throw new NotFoundError('User not found');

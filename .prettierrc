@@ -1,9 +1,8 @@
 {
+  "bracketSameLine": false,
   "singleQuote": true,
-  "trailingComma": "all",
-  "printWidth": 80,
-  "endOfLine": "lf",
-  "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true,
-  "importOrderGroupNamespaceSpecifiers": true
+  "trailingComma": "es5",
+  "semi": true,
+  "arrowParens": "always",
+  "printWidth": 100
 }

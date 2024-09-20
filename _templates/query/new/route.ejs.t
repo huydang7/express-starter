@@ -8,12 +8,12 @@ to: src/routes/<%=h.changeCase.paramCase(name)%>/<%=h.changeCase.paramCase(name)
 %>
 
 import * as Validator from './validator';
-import { BaseError } from 'exceptions/base-error';
+import { BaseError } from '@/exceptions/base-error';
 import express from 'express';
 import httpStatus from 'http-status';
-import { auth } from 'middlewares/auth';
-import { <%=pascalCaseName%>Service } from 'services';
-import { catchAsync, pick } from 'shared/utils';
+import { auth } from '@/middlewares/auth';
+import { <%=pascalCaseName%>Service } from '@/services';
+import { catchAsync, pick } from '@/shared/utils';
 
 
 const router = express.Router();

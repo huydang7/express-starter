@@ -1,8 +1,10 @@
-import { TimestampDefinition } from './base';
 import bcrypt from 'bcryptjs';
-import { IUser, Role } from 'interfaces/user';
 import sequelize, { DataTypes, Model, Optional } from 'sequelize';
-import { enumToArray } from 'shared/utils';
+
+import { IUser, Role } from '@/interfaces/user';
+import { enumToArray } from '@/shared/utils';
+
+import { TimestampDefinition } from './base';
 
 type CreationAttributes = Optional<IUser, 'id'>;
 
@@ -73,6 +75,6 @@ export const initModel = (connection: sequelize.Sequelize): void => {
       sequelize: connection,
       modelName: 'User',
       tableName: 'user',
-    },
+    }
   );
 };
