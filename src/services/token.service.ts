@@ -63,11 +63,11 @@ export const generateAuthTokens = async (user: IUser) => {
 
   return {
     access: {
-      token: accessToken,
+      value: accessToken,
       expires: accessTokenExpires.toDate(),
     },
     refresh: {
-      token: refreshToken,
+      value: refreshToken,
       expires: refreshTokenExpires.toDate(),
     },
   };

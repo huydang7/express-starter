@@ -28,7 +28,7 @@ app.use(cors());
 app.use(compression());
 
 passport.use('jwt', jwtStrategy);
-app.use('/api/v1', routes);
+app.use('/v1', routes);
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/files', express.static(path.join(__dirname, '../files')));
 app.use((req, res, next) => {
